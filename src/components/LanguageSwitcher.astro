@@ -1,0 +1,24 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+interface Props {
+  currentLang: 'en' | 'id' | 'ja';
+}
+const { currentLang } = Astro.props;
+
+const locales = [
+  { code: 'en', label: 'English' },
+  { code: 'id', label: 'Indonesian' },
+  { code: 'ja', label: 'Japanese' }
+];
+---
+<nav class="flex gap-4">
+  {locales.map(locale => (
+    <a 
+      href={getRelativeLocaleUrl(locale.code)}
+      class={locale.code === currentLang ? 'font-bold underline' : ''}
+    >
+      {locale.label}
+    </a>
+  ))}
+</nav>
