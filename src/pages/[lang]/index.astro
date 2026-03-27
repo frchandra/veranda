@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as any);
+---
+<BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any}>
+  <h1 class="text-4xl font-bold mb-4">{t('hello')} — {lang}</h1>
+  <p>Welcome to the multi-language site demo.</p>
+</BaseLayout>
