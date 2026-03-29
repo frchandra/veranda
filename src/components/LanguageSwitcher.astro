@@ -7,16 +7,18 @@ interface Props {
 const { currentLang } = Astro.props;
 
 const locales = [
-  { code: 'en', label: 'English' },
-  { code: 'id', label: 'Indonesian' },
-  { code: 'ja', label: 'Japanese' }
-];
+  { code: 'en', label: 'EN' },
+  { code: 'id', label: 'ID' },
+  { code: 'ja', label: 'JA' },
+] as const;
 ---
-<nav class="flex gap-4">
+<nav class="lang-switcher" aria-label="Language switcher">
   {locales.map(locale => (
-    <a 
+    <a
       href={getRelativeLocaleUrl(locale.code)}
-      class={locale.code === currentLang ? 'font-bold underline' : ''}
+      class={locale.code === currentLang ? 'active' : ''}
+      aria-current={locale.code === currentLang ? 'true' : undefined}
+      lang={locale.code}
     >
       {locale.label}
     </a>

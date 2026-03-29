@@ -1,1 +1,361 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — Veranda Visual Identity
+   Based on desing.md: "The Personal Archivist" style
+   ============================================================ */
+
+:root {
+  /* ── Color Palette ── */
+  --bg:          #FAF9F5;   /* Soft off-white — aged paper         */
+  --header-bg:   #2C3E50;   /* Dark Charcoal / Slate               */
+  --accent:      #33628E;   /* Technical Blue — actions & buttons   */
+  --accent-hover:#2A5275;   /* Darker accent for hover states       */
+  --text:        #30332F;   /* Deep Gray — body text                */
+  --text-muted:  #6B7280;   /* Muted text for metadata              */
+  --text-on-dark:#F0EDE6;   /* Light text on dark backgrounds       */
+  --border:      #D6D3CC;   /* Subtle border color                  */
+  --card-bg:     #F3F1EB;   /* Slightly darker than bg for cards    */
+
+  /* ── Typography ── */
+  --font-headline: 'Newsreader', 'Georgia', serif;
+  --font-body:     'Noto Serif', 'Georgia', serif;
+  --font-meta:     'Work Sans', 'Helvetica Neue', sans-serif;
+
+  /* ── Spacing Scale ── */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* ── Layout ── */
+  --content-max: 720px;
+  --wide-max:    1080px;
+  --header-height: 56px;
+
+  /* ── Misc ── */
+  --radius: 0px;            /* Sharp corners everywhere             */
+  --transition: 180ms ease;
+}
+
+/* ============================================================
+   BASE RESET & TYPOGRAPHY
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: 1.7;
+}
+
+/* ── Headings ── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.35rem; }
+
+/* ── Links ── */
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   GLOBAL HEADER BAR
+   ============================================================ */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background-color: var(--header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-xl);
+  font-family: var(--font-meta);
+}
+
+.site-brand {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.site-brand:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.site-nav a {
+  font-family: var(--font-meta);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-on-dark);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color var(--transition);
+}
+
+.site-nav a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-nav a[aria-current="page"] {
+  color: #fff;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+/* ── Header right section ── */
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* ============================================================
+   LANGUAGE SWITCHER (pills in header)
+   ============================================================ */
+
+.lang-switcher {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lang-switcher a {
+  font-family: var(--font-meta);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-on-dark);
+  text-decoration: none;
+  padding: var(--space-xs) var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: background-color var(--transition), color var(--transition);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.lang-switcher a:last-child {
+  border-right: none;
+}
+
+.lang-switcher a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.lang-switcher a.active {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.site-footer {
+  font-family: var(--font-meta);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   LOBBY PAGE — non-scrollable portal
+   ============================================================ */
+
+.lobby-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--header-height) var(--space-xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle gear watermark */
+.lobby-page::before {
+  content: '⚙';
+  position: absolute;
+  font-size: 28rem;
+  color: rgba(0, 0, 0, 0.018);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+}
+
+.lobby-content {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+}
+
+.lobby-title {
+  font-family: var(--font-headline);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--header-bg);
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.01em;
+}
+
+.lobby-tagline {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: var(--space-3xl);
+}
+
+/* ── External Links Grid ── */
+
+.lobby-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.lobby-link {
+  font-family: var(--font-meta);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: var(--space-xs) var(--space-md);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: background-color var(--transition), color var(--transition);
+  border-radius: var(--radius);
+}
+
+.lobby-link:hover {
+  background-color: var(--accent);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ── Internal Navigation ── */
+
+.lobby-nav {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.lobby-nav a {
+  font-family: var(--font-meta);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.lobby-nav a:hover {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  text-decoration: none;
+}
+
+/* ── Separator line ── */
+
+.lobby-separator {
+  width: 60px;
+  height: 1px;
+  background-color: var(--border);
+  margin: var(--space-xl) auto;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0 var(--space-md);
+  }
+
+  .site-nav {
+    display: none; /* Hidden on mobile — lobby nav serves as primary */
+  }
+
+  .lobby-title {
+    font-size: 2.5rem;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+}
