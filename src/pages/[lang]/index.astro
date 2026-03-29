@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
 import { useTranslations } from '../../i18n/utils';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 export function getStaticPaths() {
   return [
@@ -12,8 +14,34 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 const t = useTranslations(lang as any);
+
+// Load links data for current language
+const dataPath = path.resolve(`./src/data/links.${lang}.json`);
+const linksRaw = await fs.readFile(dataPath, 'utf-8');
+const links = JSON.parse(linksRaw) as { label: string, url: string }[];
 ---
-<BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any}>
-  <h1 class="text-4xl font-bold mb-4">{t('hello')} — {lang}</h1>
-  <p>Welcome to the multi-language site demo.</p>
+<BaseLayout title={t('siteTitle')} description={t('siteDescription')} lang={lang as any} isLobby={true}>
+  <div class="lobby-page">
+    <div class="lobby-content">
+      <h1 class="lobby-title">{t('lobbyName')}</h1>
+      <p class="lobby-tagline">{t('tagline')}</p>
+
+      <div class="lobby-links" aria-label={t('externalLinksHeading')}>
+        {links.map(link => (
+          <a href={link.url} class="lobby-link" target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <div class="lobby-separator" aria-hidden="true"></div>
+
+      <nav class="lobby-nav" aria-label="Lobby navigation">
+        <a href={`/${lang}/blog/`}>{t('navBlog')}</a>
+        <a href={`/${lang}/projects/`}>{t('navProjects')}</a>
+        <a href={`/${lang}/gallery/`}>{t('navGallery')}</a>
+        <a href={`/${lang}/contact/`}>{t('navContact')}</a>
+      </nav>
+    </div>
+  </div>
 </BaseLayout>

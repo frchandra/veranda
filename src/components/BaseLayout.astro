@@ -1,34 +1,47 @@
 ---
 import SEOHead from './SEOHead.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations } from '../i18n/utils';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
   lang: 'en' | 'id' | 'ja';
+  isLobby?: boolean;
 }
-const { title, description, lang } = Astro.props;
+
+const { title, description, lang, isLobby = false } = Astro.props;
+const t = useTranslations(lang);
 ---
 <html lang={lang}>
   <head>
     <SEOHead title={title} description={description} />
   </head>
-  <body class="bg-white text-slate-900 dark:bg-slate-900 dark:text-white max-w-4xl mx-auto p-8 font-sans">
-    <header class="flex justify-between items-center mb-12">
-      <nav class="flex gap-4">
-        <a href={`/${lang}/`} class="hover:underline">Home</a>
-        <a href={`/${lang}/blog/`} class="hover:underline">Blog</a>
+  <body>
+    <header class="site-header">
+      <a href={`/${lang}/`} class="site-brand">Veranda</a>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href={`/${lang}/blog/`}>{t('navBlog')}</a>
+        <a href={`/${lang}/projects/`}>{t('navProjects')}</a>
+        <a href={`/${lang}/gallery/`}>{t('navGallery')}</a>
+        <a href={`/${lang}/contact/`}>{t('navContact')}</a>
       </nav>
-      <LanguageSwitcher currentLang={lang} />
+
+      <div class="header-right">
+        <LanguageSwitcher currentLang={lang} />
+      </div>
     </header>
-    
+
     <main>
       <slot />
     </main>
 
-    <footer class="mt-20 text-sm text-slate-500 text-center">
-      &copy; {new Date().getFullYear()} Veranda
-    </footer>
+    {!isLobby && (
+      <footer class="site-footer">
+        &copy; {new Date().getFullYear()} {t('footerCopy')}
+      </footer>
+    )}
   </body>
 </html>
