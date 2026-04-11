@@ -17,4 +17,19 @@ export default {
 
   /* ── Footer ── */
   footerCopy: "Veranda",
+
+  /* ── Blog ── */
+  blogTitle: "Journal",
+  blogDescription: "Thoughts, notes, and longer form writing.",
+  readMore: "Read more",
+  publishedOn: "Published on",
+  tagLabel: "Tags",
+  readingTime: "min read",
+  minuteRead: "min read",
+  noPosts: "No posts available.",
+  notAvailableTitle: "Translation not available",
+  notAvailableMessage: "This post has not been translated into English yet.",
+  availableIn: "This post is available in:",
+  allPosts: "All posts",
+  filterByTag: "Filter by tag:",
 };
