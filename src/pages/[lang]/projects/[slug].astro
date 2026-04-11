@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import TranslationNotice from '../../../components/TranslationNotice.astro';
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects');
+
+  // Find all unique slugs across all languages
+  // ID format from glob loader: "slug/lang" (e.g. "veranda-site/en")
+  const slugs = [...new Set(allProjects.map(p => p.id.split('/')[0]))];
+  const langs = ['en', 'id', 'ja'] as const;
+
+  return langs.flatMap(lang =>
+    slugs.map(slug => {
+      const project = allProjects.find(p => p.id === `${slug}/${lang}`);
+      const availableLangs = allProjects
+        .filter(p => p.id.startsWith(`${slug}/`))
+        .map(p => p.id.split('/')[1] as 'en' | 'id' | 'ja');
+
+      return {
+        params: { lang, slug },
+        props: { project, availableLangs },
+      };
+    })
+  );
+}
+
+const { lang, slug } = Astro.params;
+const { project, availableLangs } = Astro.props;
+
+const { Content } = project ? await render(project) : { Content: undefined };
+
+const formattedDate = project
+  ? new Intl.DateTimeFormat(lang, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(project.data.date)
+  : '';
+---
+
+<BaseLayout
+  title={project ? project.data.title : 'Translation Not Available'}
+  description={project ? project.data.description : 'This project page is not available in the selected language.'}
+  lang={lang as 'en' | 'id' | 'ja'}
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+    {!project ? (
+      <TranslationNotice
+        slug={slug}
+        currentLang={lang as 'en' | 'id' | 'ja'}
+        availableLangs={availableLangs}
+        section="projects"
+      />
+    ) : (
+      <article class="project-post">
+        {project.data.thumbnail && (
+          <img
+            src={project.data.thumbnail}
+            alt={project.data.title}
+            class="w-full h-[320px] object-cover mb-8 border border-[var(--color-dark-charcoal)]"
+            style="border-radius: 0;"
+          />
+        )}
+
+        <header class="mb-10">
+          <div class="flex items-center gap-4 text-sm font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] mb-4 tracking-wide uppercase">
+            <time datetime={project.data.date.toISOString()}>{formattedDate}</time>
+          </div>
+
+          <h1 class="text-4xl md:text-5xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-6 leading-tight">
+            {project.data.title}
+          </h1>
+
+          <div class="flex flex-wrap gap-2 mb-6">
+            {project.data.tags.map((tag: string) => (
+              <span class="inline-block border border-[var(--color-dark-charcoal)] px-3 py-1 text-sm font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] lowercase" style="border-radius: 0;">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {project.data.externalUrl && (
+            <a
+              href={project.data.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 border border-[var(--color-technical-blue)] bg-[var(--color-technical-blue)] text-white px-4 py-2 text-sm font-['Work_Sans',_sans-serif] hover:bg-[var(--accent-hover)] transition-colors"
+              style="border-radius: 0;"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              {project.data.externalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+            </a>
+          )}
+        </header>
+
+        <div class="prose prose-lg max-w-none prose-headings:font-['Newsreader',_serif] prose-headings:font-normal prose-headings:text-[var(--color-dark-charcoal)] prose-p:font-['Noto_Serif',_serif] prose-p:text-[var(--color-deep-gray)] prose-a:text-[var(--color-technical-blue)] prose-code:text-sm prose-pre:border prose-pre:border-[var(--color-dark-charcoal)]">
+          {Content && <Content />}
+        </div>
+
+        <div class="mt-12 pt-6 border-t border-[var(--border)]">
+          <a
+            href={`/${lang}/projects/`}
+            class="font-['Work_Sans',_sans-serif] text-sm text-[var(--color-technical-blue)] hover:text-[var(--color-dark-charcoal)] transition-colors"
+          >
+            &larr; {lang === 'ja' ? 'プロジェクト一覧' : lang === 'id' ? 'Semua proyek' : 'All projects'}
+          </a>
+        </div>
+      </article>
+    )}
+  </div>
+</BaseLayout>

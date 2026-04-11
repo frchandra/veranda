@@ -32,4 +32,20 @@ export default {
   availableIn: "This post is available in:",
   allPosts: "All posts",
   filterByTag: "Filter by tag:",
+
+  /* ── Projects ── */
+  projectsTitle: "Projects",
+  projectsDescription: "A catalogue of software projects, experiments, and technical work.",
+  viewProject: "View project",
+  visitSite: "Visit site",
+  noProjects: "No projects available.",
+  filterByStack: "Filter by stack:",
+  sourceCode: "Source code",
+
+  /* ── Gallery ── */
+  galleryTitle: "Gallery",
+  galleryDescription: "A curated collection of photographs and visual artifacts.",
+  noPhotos: "No photos available.",
+  albumAll: "All",
+  closeViewer: "Close",
 };
