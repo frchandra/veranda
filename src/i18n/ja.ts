@@ -48,4 +48,21 @@ export default {
   noPhotos: "写真がありません。",
   albumAll: "すべて",
   closeViewer: "閉じる",
+
+  /* ── Contact ── */
+  contactTitle: "お問い合わせ",
+  contactDescription: "お問い合わせ、コラボレーション、または単なる挨拶はこちらから。",
+  formName: "氏名",
+  formNamePlaceholder: "例: 山田 太郎",
+  formEmail: "メールアドレス",
+  formEmailPlaceholder: "例: yamada@example.com",
+  formSubject: "件名",
+  formSubjectPlaceholder: "お問い合わせ内容について...",
+  formMessage: "メッセージ",
+  formMessagePlaceholder: "こちらにメッセージを入力してください...",
+  formSubmit: "メッセージを送信",
+  formSending: "送信中...",
+  formSuccess: "メッセージが送信されました！",
+  formError: "エラーが発生しました。もう一度お試しください。",
+  formInvalidEmail: "有効なメールアドレスを入力してください。",
 };

@@ -1,0 +1,210 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: 'en' | 'id' | 'ja';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Using Cloudflare Turnstile's Testing sitekey for local development
+// Sitekey: 1x00000000000000000000AA (Always passes)
+// Secret: 1x0000000000000000000000000000000AA
+const TURNSTILE_SITEKEY = '1x00000000000000000000AA';
+---
+
+<div class="contact-form-container">
+  <form id="contact-form" class="contact-form">
+    <div class="form-group">
+      <label for="name">{t('formName')}</label>
+      <input type="text" id="name" name="name" required placeholder={t('formNamePlaceholder')} />
+    </div>
+
+    <div class="form-group">
+      <label for="email">{t('formEmail')}</label>
+      <input type="email" id="email" name="email" required placeholder={t('formEmailPlaceholder')} />
+      <span id="email-error" class="error-text" style="display: none;">{t('formInvalidEmail')}</span>
+    </div>
+
+    <div class="form-group">
+      <label for="subject">{t('formSubject')}</label>
+      <input type="text" id="subject" name="subject" required placeholder={t('formSubjectPlaceholder')} />
+    </div>
+
+    <div class="form-group">
+      <label for="message">{t('formMessage')}</label>
+      <textarea id="message" name="message" required rows="5" placeholder={t('formMessagePlaceholder')}></textarea>
+    </div>
+
+    <!-- Turnstile Widget -->
+    <div class="form-group">
+      <div class="cf-turnstile" data-sitekey={TURNSTILE_SITEKEY} data-theme="light"></div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" id="submit-btn" class="submit-button">
+        <span class="btn-text">{t('formSubmit')}</span>
+        <span class="btn-loading" style="display: none;">{t('formSending')}</span>
+      </button>
+    </div>
+
+    <div id="form-status" class="form-status" style="display: none;"></div>
+  </form>
+</div>
+
+<!-- Cloudflare Turnstile Script -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = submitBtn.querySelector('.btn-text') as HTMLElement;
+  const btnLoading = submitBtn.querySelector('.btn-loading') as HTMLElement;
+  const formStatus = document.getElementById('form-status') as HTMLElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const emailError = document.getElementById('email-error') as HTMLElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Client-side regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      emailError.style.display = 'block';
+      emailInput.focus();
+      return;
+    } else {
+      emailError.style.display = 'none';
+    }
+
+    const formData = new FormData(form);
+    
+    // UI Loading state
+    submitBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline';
+    formStatus.style.display = 'none';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        formStatus.textContent = result.message || 'Success';
+        formStatus.className = 'form-status success';
+        formStatus.style.display = 'block';
+        form.reset();
+        // Reset turnstile widget if needed (window.turnstile.reset())
+      } else {
+        throw new Error(result.message || 'Error');
+      }
+    } catch (error: any) {
+      formStatus.textContent = error.message || 'Something went wrong.';
+      formStatus.className = 'form-status error';
+      formStatus.style.display = 'block';
+    } finally {
+      submitBtn.disabled = false;
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
+    }
+  });
+</script>
+
+<style>
+  .contact-form-container {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--space-xl) 0;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  label {
+    font-family: var(--font-meta);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  input, textarea {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border);
+    background-color: #fff;
+    border-radius: var(--radius);
+    transition: border-color var(--transition);
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .error-text {
+    color: #e53e3e;
+    font-size: 0.8rem;
+    font-family: var(--font-meta);
+    margin-top: 2px;
+  }
+
+  .submit-button {
+    font-family: var(--font-meta);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-md) var(--space-xl);
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    border-radius: var(--radius);
+  }
+
+  .submit-button:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+  }
+
+  .submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    padding: var(--space-md);
+    font-family: var(--font-meta);
+    font-size: 0.9rem;
+    border-radius: var(--radius);
+  }
+
+  .form-status.success {
+    background-color: #f0fff4;
+    color: #2f855a;
+    border: 1px solid #c6f6d5;
+  }
+
+  .form-status.error {
+    background-color: #fff5f5;
+    color: #c53030;
+    border: 1px solid #fed7d7;
+  }
+</style>

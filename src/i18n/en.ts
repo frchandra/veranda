@@ -48,4 +48,21 @@ export default {
   noPhotos: "No photos available.",
   albumAll: "All",
   closeViewer: "Close",
+
+  /* ── Contact ── */
+  contactTitle: "Contact",
+  contactDescription: "Get in touch for inquiries, collaborations, or just to say hello.",
+  formName: "Full Name",
+  formNamePlaceholder: "e.g. John Doe",
+  formEmail: "Email Address",
+  formEmailPlaceholder: "e.g. john@example.com",
+  formSubject: "Subject",
+  formSubjectPlaceholder: "Inquiry about...",
+  formMessage: "Message",
+  formMessagePlaceholder: "Your message here...",
+  formSubmit: "Send Message",
+  formSending: "Sending...",
+  formSuccess: "Message sent successfully!",
+  formError: "Something went wrong. Please try again.",
+  formInvalidEmail: "Please enter a valid email address.",
 };

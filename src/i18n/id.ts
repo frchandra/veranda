@@ -48,4 +48,21 @@ export default {
   noPhotos: "Belum ada foto.",
   albumAll: "Semua",
   closeViewer: "Tutup",
+
+  /* ── Contact ── */
+  contactTitle: "Kontak",
+  contactDescription: "Hubungi saya untuk pertanyaan, kolaborasi, atau sekadar menyapa.",
+  formName: "Nama Lengkap",
+  formNamePlaceholder: "misal: John Doe",
+  formEmail: "Alamat Email",
+  formEmailPlaceholder: "misal: john@contoh.com",
+  formSubject: "Subjek",
+  formSubjectPlaceholder: "Pertanyaan tentang...",
+  formMessage: "Pesan",
+  formMessagePlaceholder: "Pesan Anda di sini...",
+  formSubmit: "Kirim Pesan",
+  formSending: "Mengirim...",
+  formSuccess: "Pesan berhasil dikirim!",
+  formError: "Terjadi kesalahan. Silakan coba lagi.",
+  formInvalidEmail: "Silakan masukkan alamat email yang valid.",
 };
