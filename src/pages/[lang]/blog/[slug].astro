@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import TranslationNotice from '../../../components/TranslationNotice.astro';
+import SEOHead from '../../../components/SEOHead.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  
+  // Find all unique slugs across all languages
+  // ID format from glob loader: "slug/lang" (e.g., "hello-world/en")
+  const slugs = [...new Set(allPosts.map(post => post.id.split('/')[0]))];
+  
+  const langs = ['en', 'id', 'ja'] as const;
+  
+  return langs.flatMap(lang => {
+    return slugs.map(slug => {
+      // Find the specific post in the current language
+      const post = allPosts.find(p => p.id === `${slug}/${lang}`);
+      
+      // Find what languages this slug is actually available in
+      const availableLangs = allPosts
+        .filter(p => p.id.startsWith(`${slug}/`))
+        .map(p => p.id.split('/')[1] as 'en' | 'id' | 'ja');
+        
+      return {
+        params: { lang, slug },
+        props: { post, availableLangs }
+      };
+    });
+  });
+}
+
+const { lang, slug } = Astro.params;
+const { post, availableLangs } = Astro.props;
+
+// If we have the post, render its content. If not, Content will be undefined.
+const { Content } = post ? await render(post) : { Content: undefined };
+
+// Formatted date
+const formattedDate = post ? new Intl.DateTimeFormat(lang, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(post.data.date) : '';
+---
+
+<BaseLayout 
+  title={post ? post.data.title : 'Translation Not Available'} 
+  description={post ? post.data.description : 'This article is not available in the selected language.'} 
+  lang={lang as 'en' | 'id' | 'ja'}
+>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+    {!post ? (
+      <TranslationNotice slug={slug} currentLang={lang as 'en' | 'id' | 'ja'} availableLangs={availableLangs} />
+    ) : (
+      <article class="blog-post">
+        {post.data.coverImage && (
+          <img 
+            src={post.data.coverImage} 
+            alt={post.data.title} 
+            class="w-full h-[400px] object-cover mb-8 border border-[var(--color-dark-charcoal)]"
+            style="border-radius: 0;"
+          />
+        )}
+        
+        <header class="mb-10 text-center">
+          <div class="flex items-center justify-center gap-4 text-sm font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] mb-4 tracking-wide uppercase">
+            <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
+            <span>&bull;</span>
+            <span>3 min read</span>
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-6 leading-tight">
+            {post.data.title}
+          </h1>
+          
+          <div class="flex flex-wrap justify-center gap-2">
+            {post.data.tags.map((tag: string) => (
+              <span class="inline-block border border-[var(--color-dark-charcoal)] px-3 py-1 text-sm font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] lowercase" style="border-radius: 0;">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </header>
+        
+        <div class="prose prose-lg max-w-none prose-headings:font-['Newsreader',_serif] prose-headings:font-normal prose-headings:text-[var(--color-dark-charcoal)] prose-p:font-['Noto_Serif',_serif] prose-p:text-[var(--color-deep-gray)] prose-a:text-[var(--color-technical-blue)] prose-img:border prose-img:border-[var(--color-dark-charcoal)]">
+          <!-- The rendered markdown content -->
+          {Content && <Content />}
+        </div>
+      </article>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'en' | 'id' | 'ja');
+
+// Get all blog entries
+const allPosts = await getCollection('blog');
+
+// Filter posts for the current language
+// Since we use a glob loader with src/content/blog/**/*.md
+// The id will look like "hello-world/en" or "hello-world/en.md" etc depending on astro config, 
+// wait, astro 5 glob loader id for "hello-world/en.md" is "hello-world/en".
+const filteredPosts = allPosts
+  .filter(post => post.id.endsWith(`/${lang}`))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Collect unique tags
+const allTags = [...new Set(filteredPosts.flatMap(post => post.data.tags))].sort();
+
+// We'll just display the first 10 for the index page to satisfy "default 10" simple pagination
+const posts = filteredPosts.slice(0, 10);
+---
+
+<BaseLayout title={t('blogTitle')} description={t('blogDescription')} lang={lang as 'en' | 'id' | 'ja'}>
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <header class="mb-12">
+      <h1 class="text-4xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-4">{t('blogTitle')}</h1>
+      <p class="font-['Noto_Serif',_serif] text-[var(--color-deep-gray)] text-lg">
+        {t('blogDescription')}
+      </p>
+    </header>
+
+    {allTags.length > 0 && (
+      <div class="mb-8">
+        <h3 class="font-['Work_Sans',_sans-serif] text-sm text-[var(--color-dark-charcoal)] mb-3 font-semibold">{t('filterByTag')}</h3>
+        <div class="flex flex-wrap gap-2">
+          {allTags.map(tag => (
+            <a href={`/${lang}/blog/?tag=${tag}`} class="inline-block border border-[var(--color-dark-charcoal)] px-3 py-1 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] hover:bg-[var(--color-dark-charcoal)] hover:text-[var(--color-off-white)] transition-colors lowercase" style="border-radius: 0;">
+              {tag}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="flex flex-col gap-8">
+      {posts.length > 0 ? (
+        posts.map(post => {
+          // Extract slug (e.g. "hello-world" from "hello-world/en")
+          const slug = post.id.split('/')[0];
+          return (
+            <BlogCard
+              title={post.data.title}
+              date={post.data.date}
+              description={post.data.description}
+              tags={post.data.tags}
+              coverImage={post.data.coverImage}
+              slug={slug}
+              lang={lang as 'en' | 'id' | 'ja'}
+            />
+          );
+        })
+      ) : (
+        <div class="bg-[var(--color-off-white)] border border-[var(--color-dark-charcoal)] p-8 text-center text-[var(--color-deep-gray)] font-['Noto_Serif',_serif]" style="border-radius: 0;">
+          {t('noPosts')}
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>

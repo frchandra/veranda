@@ -1,0 +1,43 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  slug: string;
+  currentLang: 'en' | 'id' | 'ja';
+  availableLangs: ('en' | 'id' | 'ja')[];
+}
+
+const { slug, currentLang, availableLangs } = Astro.props;
+const t = useTranslations(currentLang);
+
+const langNames = {
+  en: "English",
+  id: "Bahasa Indonesia",
+  ja: "日本語"
+};
+---
+
+<div class="translation-notice border-l-4 border-[var(--color-technical-blue)] bg-blue-50/50 p-6 my-8 ml-0">
+  <h2 class="text-xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-2 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-technical-blue)]"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    {t('notAvailableTitle')}
+  </h2>
+  
+  <p class="font-['Noto_Serif',_serif] text-[var(--color-deep-gray)] mb-4 leading-relaxed">
+    {t('notAvailableMessage')}
+  </p>
+  
+  <p class="font-['Work_Sans',_sans-serif] text-sm text-[var(--color-dark-charcoal)] font-semibold mb-2">
+    {t('availableIn')}
+  </p>
+  
+  <ul class="flex gap-4 list-none m-0 p-0 font-['Work_Sans',_sans-serif] text-sm">
+    {availableLangs.map((lang) => (
+      <li>
+        <a href={`/${lang}/blog/${slug}/`} class="inline-flex items-center gap-1 border border-[var(--color-dark-charcoal)] px-3 py-1 bg-white hover:bg-[var(--color-dark-charcoal)] hover:text-[var(--color-off-white)] transition-colors" style="border-radius: 0;">
+          {langNames[lang]} <span aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

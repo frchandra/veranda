@@ -17,4 +17,19 @@ export default {
 
   /* ── Footer ── */
   footerCopy: "Veranda",
+
+  /* ── Blog ── */
+  blogTitle: "Jurnal",
+  blogDescription: "Pemikiran, catatan, dan tulisan panjang.",
+  readMore: "Baca selengkapnya",
+  publishedOn: "Diterbitkan pada",
+  tagLabel: "Label",
+  readingTime: "mnt baca",
+  minuteRead: "mnt baca",
+  noPosts: "Belum ada tulisan.",
+  notAvailableTitle: "Terjemahan tidak tersedia",
+  notAvailableMessage: "Tulisan ini belum diterjemahkan ke bahasa Indonesia.",
+  availableIn: "Tulisan ini tersedia dalam bahasa:",
+  allPosts: "Semua tulisan",
+  filterByTag: "Saring berdasarkan label:",
 };

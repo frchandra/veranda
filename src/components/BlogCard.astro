@@ -1,0 +1,58 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  coverImage?: string;
+  slug: string;
+  lang: 'en' | 'id' | 'ja';
+}
+
+const { title, date, description, tags, coverImage, slug, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const formattedDate = new Intl.DateTimeFormat(lang, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<article class="blog-card flex flex-col md:flex-row gap-6 bg-white border border-[var(--color-dark-charcoal)] p-6 hover:shadow-lg transition-transform hover:-translate-y-1" style="border-radius: 0;">
+  {coverImage && (
+    <div class="block md:w-1/3 shrink-0">
+      <a href={`/${lang}/blog/${slug}/`} aria-label={title}>
+        <img src={coverImage} alt={title} loading="lazy" class="w-full h-48 object-cover border border-[var(--color-dark-charcoal)]" style="border-radius: 0;" />
+      </a>
+    </div>
+  )}
+  <div class="flex flex-col flex-1 justify-center">
+    <div class="flex items-center gap-4 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] mb-2 uppercase tracking-wide">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+    
+    <h2 class="text-2xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-3 leading-tight">
+      <a href={`/${lang}/blog/${slug}/`} class="hover:underline decoration-2 underline-offset-4 decoration-[var(--color-technical-blue)]">
+        {title}
+      </a>
+    </h2>
+    
+    <p class="text-[var(--color-deep-gray)] font-['Noto_Serif',_serif] text-sm mb-4 line-clamp-3 leading-relaxed">
+      {description}
+    </p>
+
+    <div class="mt-auto flex flex-wrap gap-2 items-center">
+      {tags.map((tag) => (
+        <span class="inline-block border border-[var(--color-dark-charcoal)] px-2 py-1 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] lowercase" style="border-radius: 0;">
+          {tag}
+        </span>
+      ))}
+      <a href={`/${lang}/blog/${slug}/`} class="ml-auto text-sm font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] hover:text-[var(--color-dark-charcoal)] transition-colors underline underline-offset-4">
+        {t('readMore')} &rarr;
+      </a>
+    </div>
+  </div>
+</article>

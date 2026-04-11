@@ -11,11 +11,14 @@ const locales = [
   { code: 'id', label: 'ID' },
   { code: 'ja', label: 'JA' },
 ] as const;
+
+const pathname = Astro.url.pathname;
+const pathWithoutLang = pathname.replace(new RegExp(`^/${currentLang}/?`), '');
 ---
 <nav class="lang-switcher" aria-label="Language switcher">
   {locales.map(locale => (
     <a
-      href={getRelativeLocaleUrl(locale.code)}
+      href={getRelativeLocaleUrl(locale.code, pathWithoutLang)}
       class={locale.code === currentLang ? 'active' : ''}
       aria-current={locale.code === currentLang ? 'true' : undefined}
       lang={locale.code}
