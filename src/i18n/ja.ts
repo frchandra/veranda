@@ -32,4 +32,20 @@ export default {
   availableIn: "利用可能な言語:",
   allPosts: "すべての記事",
   filterByTag: "タグで絞り込む:",
+
+  /* ── Projects ── */
+  projectsTitle: "プロジェクト",
+  projectsDescription: "ソフトウェアプロジェクト、実験、技術的な作業のカタログ。",
+  viewProject: "プロジェクトを見る",
+  visitSite: "サイトを訪問",
+  noProjects: "プロジェクトがありません。",
+  filterByStack: "スタックで絞り込む:",
+  sourceCode: "ソースコード",
+
+  /* ── Gallery ── */
+  galleryTitle: "ギャラリー",
+  galleryDescription: "厳選された写真とビジュアルアーティファクトのコレクション。",
+  noPhotos: "写真がありません。",
+  albumAll: "すべて",
+  closeViewer: "閉じる",
 };

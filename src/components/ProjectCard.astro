@@ -1,0 +1,84 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  thumbnail?: string;
+  externalUrl?: string;
+  slug: string;
+  lang: 'en' | 'id' | 'ja';
+}
+
+const { title, date, description, tags, thumbnail, externalUrl, slug, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const formattedDate = new Intl.DateTimeFormat(lang, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(date);
+---
+
+<article class="project-card flex flex-col bg-white border border-[var(--color-dark-charcoal)] hover:shadow-lg transition-transform hover:-translate-y-1" style="border-radius: 0;">
+  {thumbnail && (
+    <div class="shrink-0">
+      <a href={`/${lang}/projects/${slug}/`} aria-label={title} tabindex="-1">
+        <img
+          src={thumbnail}
+          alt={title}
+          loading="lazy"
+          class="w-full h-48 object-cover border-b border-[var(--color-dark-charcoal)]"
+          style="border-radius: 0;"
+        />
+      </a>
+    </div>
+  )}
+
+  <div class="flex flex-col flex-1 p-6">
+    <div class="flex items-center gap-4 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] mb-2 uppercase tracking-wide">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+
+    <h2 class="text-xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-3 leading-tight">
+      <a href={`/${lang}/projects/${slug}/`} class="hover:underline decoration-2 underline-offset-4 decoration-[var(--color-technical-blue)]">
+        {title}
+      </a>
+    </h2>
+
+    <p class="text-[var(--color-deep-gray)] font-['Noto_Serif',_serif] text-sm mb-4 line-clamp-3 leading-relaxed flex-1">
+      {description}
+    </p>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      {tags.map((tag) => (
+        <span class="inline-block border border-[var(--color-dark-charcoal)] px-2 py-1 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] lowercase" style="border-radius: 0;">
+          {tag}
+        </span>
+      ))}
+    </div>
+
+    <div class="mt-auto flex flex-wrap gap-3 items-center pt-2 border-t border-[var(--border)]">
+      <a
+        href={`/${lang}/projects/${slug}/`}
+        class="text-sm font-['Work_Sans',_sans-serif] text-[var(--color-technical-blue)] hover:text-[var(--color-dark-charcoal)] transition-colors underline underline-offset-4"
+      >
+        {t('viewProject')} &rarr;
+      </a>
+      {externalUrl && (
+        <a
+          href={externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ml-auto inline-flex items-center gap-1 border border-[var(--color-dark-charcoal)] px-3 py-1 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] hover:bg-[var(--color-dark-charcoal)] hover:text-white transition-colors"
+          style="border-radius: 0;"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          {t('visitSite')}
+        </a>
+      )}
+    </div>
+  </div>
+</article>

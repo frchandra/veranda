@@ -1,0 +1,125 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'en' | 'id' | 'ja');
+
+// Get all project entries and filter for the current language
+// ID format from glob loader: "slug/lang" (e.g. "veranda-site/en")
+const allProjects = await getCollection('projects');
+const filteredProjects = allProjects
+  .filter(p => p.id.endsWith(`/${lang}`))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Collect unique tags for stack filter
+const allTags = [...new Set(filteredProjects.flatMap(p => p.data.tags))].sort();
+
+// Get tag filter from query string (client-side filtering only)
+const projects = filteredProjects;
+---
+
+<BaseLayout title={t('projectsTitle')} description={t('projectsDescription')} lang={lang as 'en' | 'id' | 'ja'}>
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <header class="mb-12">
+      <h1 class="text-4xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-4">{t('projectsTitle')}</h1>
+      <p class="font-['Noto_Serif',_serif] text-[var(--color-deep-gray)] text-lg">
+        {t('projectsDescription')}
+      </p>
+    </header>
+
+    {allTags.length > 0 && (
+      <div class="mb-8">
+        <h3 class="font-['Work_Sans',_sans-serif] text-sm text-[var(--color-dark-charcoal)] mb-3 font-semibold uppercase tracking-wide">
+          {t('filterByStack')}
+        </h3>
+        <div class="flex flex-wrap gap-2" id="stack-filters">
+          <button
+            type="button"
+            data-tag="all"
+            class="stack-filter active-filter inline-block border border-[var(--color-dark-charcoal)] px-3 py-1 text-xs font-['Work_Sans',_sans-serif] bg-[var(--color-dark-charcoal)] text-white cursor-pointer transition-colors"
+            style="border-radius: 0;"
+          >
+            {t('albumAll')}
+          </button>
+          {allTags.map(tag => (
+            <button
+              type="button"
+              data-tag={tag}
+              class="stack-filter inline-block border border-[var(--color-dark-charcoal)] px-3 py-1 text-xs font-['Work_Sans',_sans-serif] text-[var(--color-dark-charcoal)] hover:bg-[var(--color-dark-charcoal)] hover:text-white cursor-pointer transition-colors lowercase"
+              style="border-radius: 0;"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+      {projects.length > 0 ? (
+        projects.map(project => {
+          const slug = project.id.split('/')[0];
+          return (
+            <div class="project-item" data-tags={project.data.tags.join(',')}>
+              <ProjectCard
+                title={project.data.title}
+                date={project.data.date}
+                description={project.data.description}
+                tags={project.data.tags}
+                thumbnail={project.data.thumbnail}
+                externalUrl={project.data.externalUrl}
+                slug={slug}
+                lang={lang as 'en' | 'id' | 'ja'}
+              />
+            </div>
+          );
+        })
+      ) : (
+        <div class="col-span-full bg-[var(--color-off-white)] border border-[var(--color-dark-charcoal)] p-8 text-center text-[var(--color-deep-gray)] font-['Noto_Serif',_serif]" style="border-radius: 0;">
+          {t('noProjects')}
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Client-side stack/tag filtering
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.stack-filter');
+  const projectItems = document.querySelectorAll<HTMLElement>('.project-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag!;
+
+      // Update active state
+      filterBtns.forEach(b => {
+        const isActive = b.dataset.tag === tag;
+        b.classList.toggle('bg-[var(--color-dark-charcoal)]', isActive);
+        b.classList.toggle('text-white', isActive);
+        b.classList.toggle('active-filter', isActive);
+      });
+
+      // Filter project cards
+      projectItems.forEach(item => {
+        if (tag === 'all') {
+          item.style.display = '';
+        } else {
+          const tags = (item.dataset.tags || '').split(',');
+          item.style.display = tags.includes(tag) ? '' : 'none';
+        }
+      });
+    });
+  });
+</script>

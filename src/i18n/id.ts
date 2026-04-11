@@ -32,4 +32,20 @@ export default {
   availableIn: "Tulisan ini tersedia dalam bahasa:",
   allPosts: "Semua tulisan",
   filterByTag: "Saring berdasarkan label:",
+
+  /* ── Projects ── */
+  projectsTitle: "Proyek",
+  projectsDescription: "Katalog proyek perangkat lunak, eksperimen, dan pekerjaan teknis.",
+  viewProject: "Lihat proyek",
+  visitSite: "Kunjungi situs",
+  noProjects: "Belum ada proyek.",
+  filterByStack: "Saring berdasarkan tumpukan:",
+  sourceCode: "Kode sumber",
+
+  /* ── Gallery ── */
+  galleryTitle: "Galeri",
+  galleryDescription: "Koleksi foto dan artefak visual yang dikurasi.",
+  noPhotos: "Belum ada foto.",
+  albumAll: "Semua",
+  closeViewer: "Tutup",
 };

@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import GalleryGrid from '../../../components/GalleryGrid.astro';
+import { useTranslations } from '../../../i18n/utils';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'en' | 'id' | 'ja');
+
+// Discover gallery images from public/media/gallery/{album}/ at build time
+const galleryDir = path.resolve('./public/media/gallery');
+
+const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
+
+interface GalleryImage {
+  src: string;
+  album: string;
+  filename: string;
+  alt: string;
+}
+
+const images: GalleryImage[] = [];
+
+try {
+  const albums = await fs.readdir(galleryDir, { withFileTypes: true });
+  for (const album of albums.filter(e => e.isDirectory())) {
+    const albumPath = path.join(galleryDir, album.name);
+    const files = await fs.readdir(albumPath, { withFileTypes: true });
+    for (const file of files.filter(e => e.isFile() && IMAGE_EXTS.has(path.extname(e.name).toLowerCase()))) {
+      images.push({
+        src: `/media/gallery/${album.name}/${file.name}`,
+        album: album.name,
+        filename: file.name,
+        alt: `${album.name} — ${path.basename(file.name, path.extname(file.name)).replace(/-/g, ' ')}`,
+      });
+    }
+  }
+} catch {
+  // Gallery directory doesn't exist yet — render empty state
+}
+---
+
+<BaseLayout title={t('galleryTitle')} description={t('galleryDescription')} lang={lang as 'en' | 'id' | 'ja'}>
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <header class="mb-12">
+      <h1 class="text-4xl font-['Newsreader',_serif] text-[var(--color-dark-charcoal)] mb-4">{t('galleryTitle')}</h1>
+      <p class="font-['Noto_Serif',_serif] text-[var(--color-deep-gray)] text-lg">
+        {t('galleryDescription')}
+      </p>
+    </header>
+
+    <GalleryGrid images={images} lang={lang as 'en' | 'id' | 'ja'} />
+  </div>
+</BaseLayout>

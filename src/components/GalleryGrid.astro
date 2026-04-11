@@ -1,0 +1,233 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface GalleryImage {
+  src: string;
+  album: string;
+  filename: string;
+  alt: string;
+}
+
+interface Props {
+  images: GalleryImage[];
+  lang: 'en' | 'id' | 'ja';
+}
+
+const { images, lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Collect unique albums in order of first appearance
+const albums = ['all', ...new Set(images.map(img => img.album))];
+---
+
+<div class="gallery-wrap">
+  {/* Album filter tabs */}
+  {albums.length > 2 && (
+    <div class="album-tabs flex flex-wrap gap-0 mb-8 border border-[var(--color-dark-charcoal)]" style="border-radius: 0;" role="tablist" aria-label="Filter by album">
+      {albums.map((album) => (
+        <button
+          type="button"
+          role="tab"
+          data-album={album}
+          aria-selected={album === 'all' ? 'true' : 'false'}
+          class={`album-tab px-4 py-2 text-sm font-['Work_Sans',_sans-serif] uppercase tracking-wide border-r border-[var(--color-dark-charcoal)] last:border-r-0 transition-colors cursor-pointer ${album === 'all' ? 'bg-[var(--color-dark-charcoal)] text-white' : 'text-[var(--color-dark-charcoal)] hover:bg-[var(--color-dark-charcoal)] hover:text-white'}`}
+          style="border-radius: 0;"
+        >
+          {album === 'all' ? t('albumAll') : album}
+        </button>
+      ))}
+    </div>
+  )}
+
+  {/* Photo grid */}
+  <div
+    class="gallery-grid grid gap-3"
+    style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"
+    id="gallery-grid"
+  >
+    {images.map((img, index) => (
+      <button
+        type="button"
+        class="gallery-item group relative aspect-square overflow-hidden border border-[var(--color-dark-charcoal)] cursor-pointer bg-[var(--card-bg)] block w-full p-0"
+        style="border-radius: 0;"
+        data-album={img.album}
+        data-index={index}
+        aria-label={`Open image: ${img.alt}`}
+      >
+        <img
+          src={img.src}
+          alt={img.alt}
+          loading="lazy"
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          style="border-radius: 0;"
+        />
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+      </button>
+    ))}
+  </div>
+
+  {images.length === 0 && (
+    <div class="bg-[var(--color-off-white)] border border-[var(--color-dark-charcoal)] p-8 text-center text-[var(--color-deep-gray)] font-['Noto_Serif',_serif]" style="border-radius: 0;">
+      {t('noPhotos')}
+    </div>
+  )}
+</div>
+
+{/* Lightbox overlay */}
+<div
+  id="lightbox"
+  class="fixed inset-0 z-[200] bg-black/92 flex items-center justify-center"
+  style="display: none;"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <button
+    id="lightbox-close"
+    type="button"
+    class="absolute top-4 right-4 text-white/80 hover:text-white font-['Work_Sans',_sans-serif] text-sm uppercase tracking-widest flex items-center gap-2 transition-colors"
+    aria-label={t('closeViewer')}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    {t('closeViewer')}
+  </button>
+
+  <button
+    id="lightbox-prev"
+    type="button"
+    class="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2"
+    aria-label="Previous image"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+
+  <div class="max-w-5xl w-full mx-16 flex flex-col items-center gap-4">
+    <img
+      id="lightbox-img"
+      src=""
+      alt=""
+      class="max-h-[80vh] max-w-full object-contain"
+      style="border-radius: 0;"
+    />
+    <p id="lightbox-caption" class="font-['Work_Sans',_sans-serif] text-white/60 text-sm tracking-wide uppercase"></p>
+  </div>
+
+  <button
+    id="lightbox-next"
+    type="button"
+    class="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2"
+    aria-label="Next image"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+  // ── Gallery: album filtering ──────────────────────────────────
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.album-tab');
+  const items = document.querySelectorAll<HTMLElement>('.gallery-item');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const album = tab.dataset.album!;
+
+      // Update tab active states
+      tabs.forEach(t => {
+        const isActive = t.dataset.album === album;
+        t.setAttribute('aria-selected', String(isActive));
+        t.classList.toggle('bg-[var(--color-dark-charcoal)]', isActive);
+        t.classList.toggle('text-white', isActive);
+      });
+
+      // Toggle item visibility
+      items.forEach(item => {
+        const visible = album === 'all' || item.dataset.album === album;
+        item.style.display = visible ? '' : 'none';
+      });
+
+      // Rebuild visible index for lightbox
+      buildVisibleList();
+    });
+  });
+
+  // ── Lightbox ──────────────────────────────────────────────────
+  const lightbox   = document.getElementById('lightbox')!;
+  const lbImg      = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbCaption  = document.getElementById('lightbox-caption')!;
+  const lbClose    = document.getElementById('lightbox-close')!;
+  const lbPrev     = document.getElementById('lightbox-prev')!;
+  const lbNext     = document.getElementById('lightbox-next')!;
+
+  // Full image list from gallery items (SSR data)
+  const allImages = Array.from(items).map(el => {
+    const img = el.querySelector('img')!;
+    return { src: img.src, alt: img.alt, album: el.dataset.album! };
+  });
+
+  let visibleImages = [...allImages];
+  let currentIndex = 0;
+
+  function buildVisibleList() {
+    visibleImages = allImages.filter((_img, i) => {
+      const item = items[i];
+      return item && item.style.display !== 'none';
+    });
+  }
+
+  function openLightbox(index: number) {
+    currentIndex = index;
+    const img = visibleImages[currentIndex];
+    if (!img) return;
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCaption.textContent = img.album === 'all' ? '' : img.album;
+    lightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + visibleImages.length) % visibleImages.length;
+    openLightbox(currentIndex);
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % visibleImages.length;
+    openLightbox(currentIndex);
+  }
+
+  // Attach open handlers to gallery items
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      buildVisibleList();
+      // Map original index to visible index
+      const src = allImages[i]?.src;
+      const vIdx = visibleImages.findIndex(v => v.src === src);
+      openLightbox(vIdx >= 0 ? vIdx : 0);
+    });
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', showPrev);
+  lbNext.addEventListener('click', showNext);
+
+  // Click outside image closes lightbox
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.style.display === 'none') return;
+    if (e.key === 'Escape')      closeLightbox();
+    else if (e.key === 'ArrowLeft')  showPrev();
+    else if (e.key === 'ArrowRight') showNext();
+  });
+</script>
