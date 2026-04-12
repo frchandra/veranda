@@ -14,6 +14,46 @@ const { lang } = Astro.params;
 const t = useTranslations(lang as any);
 ---
 <BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any}>
-  <h1 class="text-4xl font-bold mb-4">{t('hello')} — {lang}</h1>
-  <p>Welcome to the multi-language site demo.</p>
+  <!-- Full Screen Background Image -->
+  <div class="absolute inset-0 w-full h-[calc(100vh-6rem)] -z-10 top-24">
+    <img alt="atmospheric wide shot of a minimalist concrete architecture studio at dawn with large glass windows and soft blue morning light" class="w-full h-full object-cover grayscale contrast-125 opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNvze4F9KoyZpvMVwK0FZwqIT2XyKEFQhV8WMartFOwscy4t_5oC2xeF4bk-Gzs49H3sK6z8AtQQ9mMQG_dJvlZLsbAhyjPyYg6Zq94UZV3-zoZaNNQyWHInQ_rZtddyacal3334I3HDb4_zQp3RzRfG65jQWS9b6kZ-Rrwux4JttbsJ1PM0JMrMaQiZ7gvmbuQ-tVEJ8oUDbYzObKrFl_VdknJBuOTdjIYGpny_aaQcDENKWTYNvmHV2_fkLgRX55uR7UQqsbzw5C"/>
+    <!-- Tonal Overlay -->
+    <div class="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
+  </div>
+
+  <!-- Hero Box (Text Editor Style) -->
+  <div class="absolute top-12 left-12 md:left-24 max-w-sm z-10">
+    <div class="bg-surface-container-lowest/40 backdrop-blur-xl p-8 border-l border-primary/30 shadow-[0px_4px_20px_rgba(45,52,53,0.06)]">
+      <div class="font-headline text-[10px] uppercase tracking-[0.2em] text-primary mb-4 flex items-center gap-2">
+        <span class="w-2 h-2 bg-primary"></span>
+        {t('heroManifesto')}
+      </div>
+      <h1 class="font-headline text-2xl font-light leading-tight text-on-surface mb-6">
+        {t('heroTitle')} <span class="text-primary font-medium">{t('heroTitleHighlight')}</span>
+      </h1>
+      <p class="font-body text-sm text-on-surface-variant leading-relaxed mb-8">
+        {t('heroSubtitle')}
+      </p>
+      <div class="flex items-center gap-4">
+        <a href={`/${lang}/blog`} class="bg-primary text-on-primary px-6 py-2 text-xs font-headline uppercase tracking-widest mechanical-flicker-100ms flex items-center gap-2 group cursor-pointer inline-flex">
+          {t('exploreArchive')}
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+        <div class="text-[10px] font-headline uppercase tracking-tighter text-outline typewriter-cursor">
+          {t('heroVersion')}
+        </div>
+      </div>
+    </div>
+    <!-- Margin Note -->
+    <div class="mt-4 font-headline text-[9px] uppercase tracking-[0.3em] text-outline-variant pl-2">
+      {t('heroCoordinates')}
+    </div>
+  </div>
+
+  <!-- Aesthetic Structural Element (Vertical Monospace Text) -->
+  <div class="absolute right-8 bottom-32 hidden lg:block">
+    <div class="rotate-90 origin-right font-headline text-[10px] uppercase tracking-[1em] text-outline-variant/40 whitespace-nowrap">
+      {t('aestheticText')}
+    </div>
+  </div>
 </BaseLayout>

@@ -12,13 +12,16 @@ const locales = [
   { code: 'ja', label: 'Japanese' }
 ];
 ---
-<nav class="flex gap-4">
-  {locales.map(locale => (
-    <a 
-      href={getRelativeLocaleUrl(locale.code)}
-      class={locale.code === currentLang ? 'font-bold underline' : ''}
-    >
-      {locale.label}
-    </a>
+<nav class="font-headline uppercase tracking-widest text-sm flex gap-2 text-outline items-center bg-transparent">
+  {locales.map((locale, index) => (
+    <>
+      <a 
+        href={getRelativeLocaleUrl(locale.code)}
+        class={`hover:text-primary transition-colors mechanical-flicker-100ms ${locale.code === currentLang ? 'text-primary font-bold border-b border-primary' : ''}`}
+      >
+        {locale.code.toUpperCase()}
+      </a>
+      {index < locales.length - 1 && <span>/</span>}
+    </>
   ))}
 </nav>
