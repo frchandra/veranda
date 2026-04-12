@@ -1,4 +1,21 @@
 export default {
   siteTitle: "Veranda",
-  hello: "Halo, Dunia!"
+  hello: "Halo, Dunia!",
+  navHome: "Beranda",
+  navJournal: "Jurnal",
+  navPortfolio: "Portofolio",
+  navGallery: "Galeri",
+  navContact: "Kontak",
+  heroTitle: "Tempat berlindung bagi",
+  heroTitleHighlight: "pikiran yang tenang.",
+  heroSubtitle: "Veranda adalah naskah digital yang dirancang untuk mereka yang menghargai kedalaman pikiran dibandingkan kebisingan. Kami merancang ruang tenang untuk pekerjaan intelektual.",
+  exploreArchive: "Jelajahi Arsip",
+  footerBuiltFor: "Dibuat untuk pikiran intelektual.",
+  footerPrivacy: "Privasi",
+  footerArchive: "Arsip",
+  footerRSS: "RSS",
+  heroManifesto: "Manifesto_Misi.txt",
+  heroVersion: "v.4.02_aktif",
+  heroCoordinates: "Koordinat: 35.6895° N, 139.6917° E",
+  aestheticText: "STRUKTUR — RITME — KEJELASAN — KESEDERHANAAN"
 };

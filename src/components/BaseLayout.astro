@@ -1,6 +1,7 @@
 ---
 import SEOHead from './SEOHead.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations } from '../i18n/utils';
 import '../styles/global.css';
 
 interface Props {
@@ -9,26 +10,40 @@ interface Props {
   lang: 'en' | 'id' | 'ja';
 }
 const { title, description, lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 <html lang={lang}>
   <head>
     <SEOHead title={title} description={description} />
   </head>
-  <body class="bg-white text-slate-900 dark:bg-slate-900 dark:text-white max-w-4xl mx-auto p-8 font-sans">
-    <header class="flex justify-between items-center mb-12">
-      <nav class="flex gap-4">
-        <a href={`/${lang}/`} class="hover:underline">Home</a>
-        <a href={`/${lang}/blog/`} class="hover:underline">Blog</a>
-      </nav>
-      <LanguageSwitcher currentLang={lang} />
-    </header>
+  <body class="bg-surface text-on-surface font-body overflow-hidden h-screen flex flex-col">
+    <nav class="bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 fixed top-0 z-50 w-full flex justify-between items-center px-8 py-6 max-w-none">
+        <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">
+            {t('siteTitle')}
+        </div>
+        <div class="hidden md:flex gap-8">
+            <a href={`/${lang}/`} class="text-primary font-bold border-b border-primary pb-1 font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navHome')}</a>
+            <a href={`/${lang}/blog/`} class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navJournal')}</a>
+            <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navPortfolio')}</a>
+            <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navGallery')}</a>
+            <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navContact')}</a>
+        </div>
+        <LanguageSwitcher currentLang={lang} />
+    </nav>
     
-    <main>
+    <main class="relative flex-grow w-full overflow-hidden mt-24">
       <slot />
     </main>
 
-    <footer class="mt-20 text-sm text-slate-500 text-center">
-      &copy; {new Date().getFullYear()} Veranda
+    <footer class="bg-surface-container w-full px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
+        <div class="font-headline text-[10px] uppercase tracking-[0.1em] text-outline">
+            &copy; {new Date().getFullYear()} {t('siteTitle')}. {t('footerBuiltFor')}
+        </div>
+        <div class="flex gap-8 font-headline text-[10px] uppercase tracking-[0.1em]">
+            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerPrivacy')}</a>
+            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerArchive')}</a>
+            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerRSS')}</a>
+        </div>
     </footer>
   </body>
 </html>
