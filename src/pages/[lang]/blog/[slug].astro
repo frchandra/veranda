@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import TranslationNotice from '../../../components/TranslationNotice.astro';
+import { getCollection, render } from 'astro:content';
+import { useTranslations } from '../../../i18n/utils';
+
+const supportedLangs = ['en', 'id', 'ja'];
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+
+  // Group entries by slug
+  const slugMap = new Map<string, string[]>();
+  allPosts.forEach((post) => {
+    const parts = post.id.split('/');
+    const slug = parts[0];
+    // Extract lang from the filename part (e.g., "en.md" -> "en" or "en" -> "en")
+    const langFile = parts[parts.length - 1].replace('.md', '');
+    if (!slugMap.has(slug)) slugMap.set(slug, []);
+    slugMap.get(slug)!.push(langFile);
+  });
+
+  const paths: any[] = [];
+  const langs = ['en', 'id', 'ja'];
+
+  slugMap.forEach((availableLangs, slug) => {
+    langs.forEach((lang) => {
+      paths.push({
+        params: { lang, slug },
+        props: { availableLangs, hasTranslation: availableLangs.includes(lang) },
+      });
+    });
+  });
+
+  return paths;
+}
+
+const { lang, slug } = Astro.params;
+const { availableLangs, hasTranslation } = Astro.props;
+const t = useTranslations(lang as any);
+
+// Get the post in the current language (if it exists)
+let post: any = null;
+let Content: any = null;
+
+if (hasTranslation) {
+  const allPosts = await getCollection('blog');
+  post = allPosts.find((p) => {
+    const parts = p.id.split('/');
+    const postSlug = parts[0];
+    const postLang = parts[parts.length - 1].replace('.md', '');
+    return postSlug === slug && postLang === lang;
+  });
+
+  if (post) {
+    const rendered = await render(post);
+    Content = rendered.Content;
+  }
+}
+
+// Reading time estimate
+const wordCount = post ? post.body?.split(/\s+/).length || 0 : 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+// Format date
+const localeMap: Record<string, string> = { en: 'en-US', id: 'id-ID', ja: 'ja-JP' };
+const formattedDate = post
+  ? post.data.date.toLocaleDateString(localeMap[lang!] || 'en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : '';
+
+// Build JSON-LD structured data
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || '';
+const jsonLd = post ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.date.toISOString(),
+  "image": post.data.coverImage ? `${siteUrl}${post.data.coverImage}` : undefined,
+  "author": {
+    "@type": "Organization",
+    "name": "Veranda"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Veranda"
+  }
+}) : '';
+
+// Build hreflang links
+const hreflangLinks = availableLangs
+  .map((al: string) => `<link rel="alternate" hreflang="${al}" href="${siteUrl}/${al}/blog/${slug}/" />`)
+  .join('\n');
+
+// Build OG meta
+const ogMeta = post ? [
+  `<meta property="og:type" content="article" />`,
+  `<meta property="og:title" content="${post.data.title}" />`,
+  `<meta property="og:description" content="${post.data.description}" />`,
+  post.data.coverImage ? `<meta property="og:image" content="${siteUrl}${post.data.coverImage}" />` : '',
+  `<meta name="twitter:card" content="summary_large_image" />`,
+  `<meta name="twitter:title" content="${post.data.title}" />`,
+  `<meta name="twitter:description" content="${post.data.description}" />`,
+  post.data.coverImage ? `<meta name="twitter:image" content="${siteUrl}${post.data.coverImage}" />` : '',
+  `<script type="application/ld+json">${jsonLd}</script>`,
+  hreflangLinks,
+].filter(Boolean).join('\n') : hreflangLinks;
+
+// Get prev/next posts for navigation
+let prevPost: any = null;
+let nextPost: any = null;
+if (hasTranslation) {
+  const allPosts = await getCollection('blog');
+  const sameLangPosts = allPosts
+    .filter((p) => {
+      const postLang = p.id.split('/').pop()?.replace('.md', '');
+      return postLang === lang;
+    })
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  const currentIdx = sameLangPosts.findIndex((p) => p.id.split('/')[0] === slug);
+  if (currentIdx > 0) nextPost = sameLangPosts[currentIdx - 1]; // newer
+  if (currentIdx < sameLangPosts.length - 1) prevPost = sameLangPosts[currentIdx + 1]; // older
+}
+---
+
+<BaseLayout
+  title={post ? `${post.data.title} — ${t('siteTitle')}` : `${t('notAvailableTitle')} — ${t('siteTitle')}`}
+  description={post ? post.data.description : t('notAvailableMessage')}
+  lang={lang as any}
+  extraHead={ogMeta}
+>
+  {!hasTranslation ? (
+    <TranslationNotice slug={slug!} currentLang={lang as any} availableLangs={availableLangs} />
+  ) : post ? (
+    <article class="bg-surface-container-low">
+      {/* Article Header */}
+      <header class="max-w-[65ch] mx-auto px-6 pt-16 pb-8">
+        {/* Category + Date */}
+        <div class="flex items-center gap-3 mb-4 flex-wrap">
+          {post.data.tags.slice(0, 2).map((tag: string) => (
+            <span class="font-label text-[10px] uppercase tracking-[0.1em] bg-primary/10 text-primary px-2 py-0.5">
+              {tag}
+            </span>
+          ))}
+          <span class="font-label text-[10px] uppercase tracking-[0.05em] text-outline-variant">
+            {formattedDate}
+          </span>
+          <span class="font-label text-[10px] uppercase tracking-[0.05em] text-outline-variant">
+            — {readingTime} {t('readingTime')}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h1 class="font-headline text-3xl md:text-4xl font-semibold text-on-surface leading-tight mb-4">
+          {post.data.title}.
+        </h1>
+
+        {/* Description */}
+        <p class="font-body text-lg text-on-surface-variant leading-relaxed">
+          {post.data.description}
+        </p>
+      </header>
+
+      {/* Cover Image */}
+      {post.data.coverImage && (
+        <div class="max-w-4xl mx-auto px-6 pb-12">
+          <img
+            src={post.data.coverImage}
+            alt={post.data.title}
+            class="w-full h-auto grayscale contrast-125 opacity-95"
+          />
+          <div class="font-label text-[9px] uppercase tracking-[0.1em] text-outline-variant mt-2 text-right">
+            Cover photograph.
+          </div>
+        </div>
+      )}
+
+      {/* Article Body */}
+      <div class="max-w-[65ch] mx-auto px-6 pb-16 prose-veranda">
+        <Content />
+      </div>
+
+      {/* Author Footer */}
+      <div class="max-w-[65ch] mx-auto px-6 pb-8">
+        <div class="border-t border-outline-variant/15 pt-8 flex items-center gap-4">
+          <div class="w-10 h-10 bg-primary/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-lg">edit_note</span>
+          </div>
+          <div>
+            <div class="font-headline text-sm font-medium text-on-surface">Editorial Team</div>
+            <div class="font-label text-[10px] uppercase tracking-[0.1em] text-outline-variant">The Digital Manuscript project</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Prev / Next Navigation */}
+      <nav class="max-w-[65ch] mx-auto px-6 pb-24">
+        <div class="border-t border-outline-variant/15 pt-8 flex justify-between items-start gap-4">
+          {prevPost ? (
+            <a href={`/${lang}/blog/${prevPost.id.split('/')[0]}/`} class="group flex-1">
+              <div class="font-label text-[9px] uppercase tracking-[0.1em] text-outline-variant mb-1 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">arrow_back</span>
+                Older
+              </div>
+              <div class="font-headline text-sm text-on-surface group-hover:text-primary transition-colors">
+                {prevPost.data.title}
+              </div>
+            </a>
+          ) : <div class="flex-1"></div>}
+
+          {nextPost ? (
+            <a href={`/${lang}/blog/${nextPost.id.split('/')[0]}/`} class="group flex-1 text-right">
+              <div class="font-label text-[9px] uppercase tracking-[0.1em] text-outline-variant mb-1 flex items-center gap-1 justify-end">
+                Newer
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </div>
+              <div class="font-headline text-sm text-on-surface group-hover:text-primary transition-colors">
+                {nextPost.data.title}
+              </div>
+            </a>
+          ) : <div class="flex-1"></div>}
+        </div>
+      </nav>
+
+      {/* Back to blog link */}
+      <div class="max-w-[65ch] mx-auto px-6 pb-12">
+        <a
+          href={`/${lang}/blog/`}
+          class="inline-flex items-center gap-2 font-headline text-[11px] uppercase tracking-[0.1em] text-outline-variant hover:text-primary transition-colors"
+        >
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          {t('allPosts')}
+        </a>
+      </div>
+    </article>
+  ) : null}
+</BaseLayout>

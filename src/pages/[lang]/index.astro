@@ -13,7 +13,7 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 const t = useTranslations(lang as any);
 ---
-<BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any}>
+<BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any} fullScreen={true}>
   <!-- Full Screen Background Image -->
   <div class="absolute inset-0 w-full h-[calc(100vh-6rem)] -z-10 top-24">
     <img alt="atmospheric wide shot of a minimalist concrete architecture studio at dawn with large glass windows and soft blue morning light" class="w-full h-full object-cover grayscale contrast-125 opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNvze4F9KoyZpvMVwK0FZwqIT2XyKEFQhV8WMartFOwscy4t_5oC2xeF4bk-Gzs49H3sK6z8AtQQ9mMQG_dJvlZLsbAhyjPyYg6Zq94UZV3-zoZaNNQyWHInQ_rZtddyacal3334I3HDb4_zQp3RzRfG65jQWS9b6kZ-Rrwux4JttbsJ1PM0JMrMaQiZ7gvmbuQ-tVEJ8oUDbYzObKrFl_VdknJBuOTdjIYGpny_aaQcDENKWTYNvmHV2_fkLgRX55uR7UQqsbzw5C"/>

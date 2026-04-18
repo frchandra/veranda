@@ -17,5 +17,19 @@ export default {
   heroManifesto: "Manifesto_Misi.txt",
   heroVersion: "v.4.02_aktif",
   heroCoordinates: "Koordinat: 35.6895° N, 139.6917° E",
-  aestheticText: "STRUKTUR — RITME — KEJELASAN — KESEDERHANAAN"
+  aestheticText: "STRUKTUR — RITME — KEJELASAN — KESEDERHANAAN",
+  // Blog-specific keys
+  blogTitle: "Jurnal.",
+  blogDescription: "Obsesi, penyelidikan, dan naskah digital. Arsip kolektif pemikiran tentang minimalisme arsitektural dan kondisi manusia.",
+  readMore: "Baca Naskah",
+  publishedOn: "Diterbitkan pada",
+  tagLabel: "Tag",
+  readingTime: "menit baca",
+  minuteRead: "menit baca",
+  noPosts: "Tidak ada naskah tersedia dalam koleksi ini.",
+  notAvailableTitle: "Terjemahan Tidak Tersedia",
+  notAvailableMessage: "Naskah ini belum diterjemahkan ke bahasa yang Anda pilih. Mungkin tersedia dalam bahasa berikut:",
+  availableIn: "Tersedia dalam",
+  allPosts: "Semua Naskah",
+  filterByTag: "Filter berdasarkan tag",
 };

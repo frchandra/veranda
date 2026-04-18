@@ -17,5 +17,19 @@ export default {
   heroManifesto: "Mission_Manifesto.txt",
   heroVersion: "v.4.02_active",
   heroCoordinates: "Coordinates: 35.6895° N, 139.6917° E",
-  aestheticText: "STRUCTURE — RHYTHM — CLARITY — RESTRAINT"
+  aestheticText: "STRUCTURE — RHYTHM — CLARITY — RESTRAINT",
+  // Blog-specific keys
+  blogTitle: "Journal.",
+  blogDescription: "Obsessions, inquiries, and digital manuscripts. A collected archive of thoughts on architectural minimalism and the human condition.",
+  readMore: "Read Manuscript",
+  publishedOn: "Published on",
+  tagLabel: "Tags",
+  readingTime: "min read",
+  minuteRead: "min read",
+  noPosts: "No manuscripts available in this collection.",
+  notAvailableTitle: "Translation Not Available",
+  notAvailableMessage: "This manuscript has not yet been translated into your selected language. It may be available in the following languages:",
+  availableIn: "Available in",
+  allPosts: "All Manuscripts",
+  filterByTag: "Filter by tag",
 };

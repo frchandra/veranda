@@ -1,6 +1,4 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-
 interface Props {
   currentLang: 'en' | 'id' | 'ja';
 }
@@ -11,12 +9,21 @@ const locales = [
   { code: 'id', label: 'Indonesian' },
   { code: 'ja', label: 'Japanese' }
 ];
+
+// Build a locale-swapped URL for the current page.
+// e.g. /en/blog/hello-world/ → /ja/blog/hello-world/
+const currentPath = Astro.url.pathname;
+function switchLang(targetLang: string): string {
+  // The path always starts with /{lang}/...
+  // Replace the first path segment (the lang code) with the target lang.
+  return currentPath.replace(/^\/[a-z]{2}(\/|$)/, `/${targetLang}$1`);
+}
 ---
 <nav class="font-headline uppercase tracking-widest text-sm flex gap-2 text-outline items-center bg-transparent">
   {locales.map((locale, index) => (
     <>
       <a 
-        href={getRelativeLocaleUrl(locale.code)}
+        href={switchLang(locale.code)}
         class={`hover:text-primary transition-colors mechanical-flicker-100ms ${locale.code === currentLang ? 'text-primary font-bold border-b border-primary' : ''}`}
       >
         {locale.code.toUpperCase()}

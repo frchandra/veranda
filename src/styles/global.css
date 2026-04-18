@@ -87,3 +87,125 @@
   0%, 100% { opacity: 1; } 
   50% { opacity: 0; } 
 }
+
+/* ─── Prose Styles for Blog Content ─── */
+.prose-veranda {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda h2 {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda h3 {
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda p {
+  margin-bottom: 1.5rem;
+  color: var(--color-on-surface-variant);
+}
+
+.prose-veranda a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 100ms step-end;
+}
+
+.prose-veranda a:hover {
+  color: var(--color-primary-dim);
+}
+
+.prose-veranda ul,
+.prose-veranda ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.prose-veranda li {
+  margin-bottom: 0.5rem;
+  color: var(--color-on-surface-variant);
+}
+
+.prose-veranda ul li::marker {
+  content: '+ ';
+  font-family: var(--font-headline);
+  color: var(--color-primary);
+}
+
+.prose-veranda ol li::marker {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.prose-veranda strong {
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda blockquote {
+  background: var(--color-surface-container);
+  border-left: 3px solid var(--color-primary);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda blockquote p {
+  margin-bottom: 0;
+  color: var(--color-on-surface);
+}
+
+.prose-veranda pre {
+  background: var(--color-surface-container);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0px;
+}
+
+.prose-veranda code {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.875em;
+}
+
+.prose-veranda :not(pre) > code {
+  background: var(--color-surface-container);
+  padding: 0.15em 0.4em;
+  color: var(--color-primary);
+}
+
+.prose-veranda img {
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  filter: grayscale(100%) contrast(1.25);
+  opacity: 0.95;
+}
+
+.prose-veranda hr {
+  border: none;
+  border-top: 1px solid var(--color-outline-variant);
+  opacity: 0.2;
+  margin: 3rem 0;
+}

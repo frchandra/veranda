@@ -1,0 +1,86 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  coverImage?: string;
+  slug: string;
+  lang: string;
+  readMoreLabel: string;
+  readingTimeLabel: string;
+}
+
+const { title, date, description, tags, coverImage, slug, lang, readMoreLabel, readingTimeLabel } = Astro.props;
+
+// Estimate reading time (rough: ~200 words/min)
+const wordCount = description.split(/\s+/).length;
+const estimatedMinutes = Math.max(1, Math.ceil(wordCount / 200) + 3); // +3 for full article
+
+// Format date locale-aware
+const localeMap: Record<string, string> = { en: 'en-US', id: 'id-ID', ja: 'ja-JP' };
+const formattedDate = date.toLocaleDateString(localeMap[lang] || 'en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="group bg-surface-container-lowest border border-outline-variant/15 flex flex-col sm:flex-row gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors">
+  {/* Thumbnail */}
+  {coverImage && (
+    <a href={`/${lang}/blog/${slug}/`} class="block sm:w-36 sm:min-h-36 w-full h-48 sm:h-auto flex-shrink-0 overflow-hidden">
+      <img
+        src={coverImage}
+        alt={title}
+        loading="lazy"
+        class="w-full h-full object-cover grayscale contrast-125 opacity-90 group-hover:opacity-100 transition-opacity"
+      />
+    </a>
+  )}
+
+  {/* Content */}
+  <div class="flex-grow p-6 sm:pl-8 sm:pr-12 flex flex-col justify-between relative">
+    {/* Top row: tags + date */}
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        {tags.slice(0, 2).map((tag) => (
+          <span class="font-label text-[10px] uppercase tracking-[0.1em] bg-primary/10 text-primary px-2 py-0.5">
+            {tag}
+          </span>
+        ))}
+        <span class="font-label text-[10px] uppercase tracking-[0.05em] text-outline-variant">
+          {formattedDate}
+        </span>
+      </div>
+
+      {/* Title */}
+      <a href={`/${lang}/blog/${slug}/`} class="block">
+        <h2 class="font-headline text-lg font-semibold text-on-surface leading-snug mb-2 group-hover:text-primary transition-colors">
+          {title}
+        </h2>
+      </a>
+
+      {/* Description */}
+      <p class="font-body text-sm text-on-surface-variant leading-relaxed line-clamp-2 mb-4">
+        {description}
+      </p>
+    </div>
+
+    {/* Bottom row: read link */}
+    <div>
+      <a
+        href={`/${lang}/blog/${slug}/`}
+        class="inline-flex items-center gap-2 font-headline text-[11px] uppercase tracking-[0.1em] text-primary hover:text-primary-dim transition-colors group/link"
+      >
+        {readMoreLabel}
+        <span class="material-symbols-outlined text-sm group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+
+    {/* Margin note: reading time (right side) */}
+    <div class="absolute top-6 right-6 font-label text-[9px] uppercase tracking-[0.1em] text-outline-variant hidden sm:block">
+      {estimatedMinutes} {readingTimeLabel}
+    </div>
+  </div>
+</article>

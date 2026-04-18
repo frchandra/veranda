@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as any);
+
+// Get all blog posts and filter by current language
+const allPosts = await getCollection('blog');
+const langPosts = allPosts
+  .filter((post) => post.id.endsWith(`/${lang}.md`) || post.id.endsWith(`/${lang}`))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Collect all unique tags
+const allTags = [...new Set(langPosts.flatMap((post) => post.data.tags))];
+---
+
+<BaseLayout title={`${t('blogTitle')} — ${t('siteTitle')}`} description={t('blogDescription')} lang={lang as any}>
+  <div class="bg-surface-container-low min-h-[calc(100vh-6rem)]">
+    {/* Page Header */}
+    <div class="max-w-3xl mx-auto px-8 pt-16 pb-12 pl-12 md:pl-24">
+      {/* Margin label */}
+      <div class="font-label text-[10px] uppercase tracking-[0.2em] text-outline-variant mb-6 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-primary"></span>
+        [ COLLECTION_v0.3 ]
+      </div>
+
+      {/* Title */}
+      <h1 class="font-display text-5xl md:text-6xl font-light tracking-tight text-on-surface mb-4">
+        {t('blogTitle')}
+      </h1>
+
+      {/* Description */}
+      <p class="font-body text-base text-on-surface-variant leading-relaxed max-w-lg">
+        {t('blogDescription')}
+      </p>
+    </div>
+
+    {/* Tag Filter */}
+    {allTags.length > 0 && (
+      <div class="max-w-3xl mx-auto px-8 pl-12 md:pl-24 pb-8">
+        <div class="flex flex-wrap gap-2 items-center" id="tag-filter">
+          <span class="font-label text-[9px] uppercase tracking-[0.1em] text-outline mr-2">{t('filterByTag')}:</span>
+          <button
+            data-tag="all"
+            class="tag-btn font-label text-[10px] uppercase tracking-[0.05em] px-3 py-1 bg-primary text-on-primary mechanical-flicker-100ms cursor-pointer"
+          >
+            All
+          </button>
+          {allTags.map((tag) => (
+            <button
+              data-tag={tag}
+              class="tag-btn font-label text-[10px] uppercase tracking-[0.05em] px-3 py-1 bg-surface-container-lowest text-on-surface-variant border border-outline-variant/15 hover:bg-primary hover:text-on-primary mechanical-flicker-100ms cursor-pointer"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Blog Post List */}
+    <div class="max-w-3xl mx-auto px-8 pl-12 md:pl-24 pb-24">
+      {langPosts.length === 0 ? (
+        <div class="py-24 text-center">
+          <p class="font-body text-on-surface-variant">{t('noPosts')}</p>
+        </div>
+      ) : (
+        <div class="flex flex-col gap-6" id="blog-list">
+          {langPosts.map((post) => {
+            // Extract slug from the post id (e.g., "hello-world/en" → "hello-world")
+            const slug = post.id.split('/')[0];
+            return (
+              <div class="blog-card-wrapper" data-tags={JSON.stringify(post.data.tags)}>
+                <BlogCard
+                  title={post.data.title}
+                  date={post.data.date}
+                  description={post.data.description}
+                  tags={post.data.tags}
+                  coverImage={post.data.coverImage}
+                  slug={slug}
+                  lang={lang!}
+                  readMoreLabel={t('readMore')}
+                  readingTimeLabel={t('readingTime')}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+
+  {/* Client-side tag filtering */}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.tag-btn');
+      const cards = document.querySelectorAll('.blog-card-wrapper');
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tag = (btn as HTMLElement).dataset.tag;
+
+          // Update button styles
+          buttons.forEach((b) => {
+            b.classList.remove('bg-primary', 'text-on-primary');
+            b.classList.add('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/15');
+          });
+          btn.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/15');
+          btn.classList.add('bg-primary', 'text-on-primary');
+
+          // Filter cards
+          cards.forEach((card) => {
+            const cardTags = JSON.parse((card as HTMLElement).dataset.tags || '[]');
+            if (tag === 'all' || cardTags.includes(tag)) {
+              (card as HTMLElement).style.display = '';
+            } else {
+              (card as HTMLElement).style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</BaseLayout>

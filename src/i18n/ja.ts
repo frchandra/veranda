@@ -17,5 +17,19 @@ export default {
   heroManifesto: "ミッション・マニフェスト.txt",
   heroVersion: "v.4.02_起動中",
   heroCoordinates: "座標: 35.6895° N, 139.6917° E",
-  aestheticText: "構造 — リズム — 明快さ — 抑制"
+  aestheticText: "構造 — リズム — 明快さ — 抑制",
+  // Blog-specific keys
+  blogTitle: "ジャーナル。",
+  blogDescription: "執着、探究、そしてデジタル・マニュスクリプト。建築的ミニマリズムと人間の条件についての思考のアーカイブ。",
+  readMore: "原稿を読む",
+  publishedOn: "公開日",
+  tagLabel: "タグ",
+  readingTime: "分で読めます",
+  minuteRead: "分で読めます",
+  noPosts: "このコレクションに原稿はありません。",
+  notAvailableTitle: "翻訳がありません",
+  notAvailableMessage: "この原稿はまだ選択された言語に翻訳されていません。以下の言語で利用可能です：",
+  availableIn: "利用可能な言語",
+  allPosts: "すべての原稿",
+  filterByTag: "タグで絞り込む",
 };

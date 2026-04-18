@@ -8,22 +8,29 @@ interface Props {
   title: string;
   description: string;
   lang: 'en' | 'id' | 'ja';
+  fullScreen?: boolean;
+  ogImage?: string;
+  extraHead?: string;
 }
-const { title, description, lang } = Astro.props;
+const { title, description, lang, fullScreen = false, ogImage, extraHead } = Astro.props;
 const t = useTranslations(lang);
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) => currentPath.startsWith(`/${lang}${path}`);
 ---
 <html lang={lang}>
   <head>
     <SEOHead title={title} description={description} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <Fragment set:html={extraHead} />
   </head>
-  <body class="bg-surface text-on-surface font-body overflow-hidden h-screen flex flex-col">
+  <body class:list={["bg-surface text-on-surface font-body flex flex-col", fullScreen ? "overflow-hidden h-screen" : "min-h-screen"]}>
     <nav class="bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 fixed top-0 z-50 w-full flex justify-between items-center px-8 py-6 max-w-none">
         <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">
-            {t('siteTitle')}
+            <a href={`/${lang}/`}>{t('siteTitle')}</a>
         </div>
         <div class="hidden md:flex gap-8">
-            <a href={`/${lang}/`} class="text-primary font-bold border-b border-primary pb-1 font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navHome')}</a>
-            <a href={`/${lang}/blog/`} class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navJournal')}</a>
+            <a href={`/${lang}/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/') && !isActive('/blog') && !isActive('/portfolio') && !isActive('/gallery') && !isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navHome')}</a>
+            <a href={`/${lang}/blog/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/blog') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navJournal')}</a>
             <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navPortfolio')}</a>
             <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navGallery')}</a>
             <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navContact')}</a>
@@ -31,7 +38,7 @@ const t = useTranslations(lang);
         <LanguageSwitcher currentLang={lang} />
     </nav>
     
-    <main class="relative flex-grow w-full overflow-hidden mt-24">
+    <main class:list={["relative flex-grow w-full mt-24", fullScreen ? "overflow-hidden" : ""]}>
       <slot />
     </main>
 
