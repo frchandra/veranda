@@ -1,0 +1,151 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: 'en' | 'id' | 'ja';
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="w-full max-w-2xl mt-12 mb-24 relative">
+  <form id="contact-form" class="flex flex-col gap-8 relative z-10" novalidate>
+    <div class="flex flex-col gap-2">
+      <label for="name" class="font-label text-sm uppercase tracking-widest text-outline-variant flex gap-1">
+        {t('contactName')} <span class="text-error">*</span>
+      </label>
+      <input type="text" id="name" name="name" required class="bg-surface-container border border-outline-variant/30 px-4 py-3 font-body text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors placeholder:text-outline-variant/50" placeholder="John Doe" />
+      <span class="text-error text-xs hidden error-msg mechanical-flicker-100ms" id="name-error">{t('contactRequired')}</span>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="email" class="font-label text-sm uppercase tracking-widest text-outline-variant flex gap-1">
+        {t('contactEmail')} <span class="text-error">*</span>
+      </label>
+      <input type="email" id="email" name="email" required class="bg-surface-container border border-outline-variant/30 px-4 py-3 font-body text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors placeholder:text-outline-variant/50" placeholder="john@example.com" />
+      <span class="text-error text-xs hidden error-msg mechanical-flicker-100ms" id="email-error">{t('contactInvalidEmail')}</span>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="subject" class="font-label text-sm uppercase tracking-widest text-outline-variant">
+        {t('contactSubject')}
+      </label>
+      <input type="text" id="subject" name="subject" class="bg-surface-container border border-outline-variant/30 px-4 py-3 font-body text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors placeholder:text-outline-variant/50" placeholder="Optional subject" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="message" class="font-label text-sm uppercase tracking-widest text-outline-variant flex gap-1">
+        {t('contactMessage')} <span class="text-error">*</span>
+      </label>
+      <textarea id="message" name="message" required rows="6" class="bg-surface-container border border-outline-variant/30 px-4 py-3 font-body text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-y placeholder:text-outline-variant/50" placeholder="Your message here..."></textarea>
+      <span class="text-error text-xs hidden error-msg mechanical-flicker-100ms" id="message-error">{t('contactRequired')}</span>
+    </div>
+
+    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA"></div>
+
+    <button type="submit" id="submit-btn" class="bg-primary text-on-primary font-headline uppercase tracking-widest text-sm py-4 px-8 mt-4 hover:bg-primary-dim transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+      <span id="btn-text">{t('contactSubmit')}</span>
+      <span id="btn-loading" class="hidden">{t('contactSending')}</span>
+    </button>
+    
+    <div id="form-success" class="hidden bg-tertiary-container text-on-tertiary-container p-4 mt-4 font-body border-l-4 border-primary text-sm shadow-sm transition-opacity">
+      {t('contactSuccess')}
+    </div>
+    
+    <div id="form-error" class="hidden bg-error-container text-on-error-container p-4 mt-4 font-body border-l-4 border-error text-sm shadow-sm transition-opacity">
+      {t('contactError')}
+    </div>
+  </form>
+  
+  <div class="absolute -z-10 -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl mix-blend-multiply"></div>
+</div>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script define:vars={{ lang }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const submitBtn = document.getElementById('submit-btn');
+    const formSuccess = document.getElementById('form-success');
+    const formError = document.getElementById('form-error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Reset state
+      document.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+      formSuccess.classList.add('hidden');
+      formError.classList.add('hidden');
+      
+      let isValid = true;
+      
+      // Validate Name
+      const name = document.getElementById('name').value.trim();
+      if (!name) {
+        document.getElementById('name-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      // Validate Email
+      const email = document.getElementById('email').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        document.getElementById('email-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      // Validate Message
+      const message = document.getElementById('message').value.trim();
+      if (!message) {
+        document.getElementById('message-error').classList.remove('hidden');
+        isValid = false;
+      }
+      
+      if (!isValid) return;
+
+      // Start submission
+      submitBtn.disabled = true;
+      btnText.classList.add('hidden');
+      btnLoading.classList.remove('hidden');
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        // Log mocked POST request
+        console.log(`[Mock] POST request to /${lang}/api/contact intercepted. Payload:`, data);
+        
+        // Standard code (mocked for now as requested):
+        /*
+        const response = await fetch(`/${lang}/api/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        */
+
+        // Simulate network latency
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Success
+        form.reset();
+        if (window.turnstile) {
+            window.turnstile.reset();
+        }
+        formSuccess.classList.remove('hidden');
+      } catch (err) {
+        console.error('Error submitting form:', err);
+        formError.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        btnText.classList.remove('hidden');
+        btnLoading.classList.add('hidden');
+      }
+    });
+  });
+</script>

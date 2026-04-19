@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import ContactForm from '../../../components/ContactForm.astro';
+import {useTranslations} from '../../../i18n/utils';
+
+export function getStaticPaths() {
+    return [
+        {params: {lang: 'en'}},
+        {params: {lang: 'id'}},
+        {params: {lang: 'ja'}},
+    ];
+}
+
+const {lang} = Astro.params;
+const t = useTranslations(lang as any);
+---
+
+<BaseLayout title={t('contactTitle')} description={t('contactDescription')} lang={lang as any}>
+
+    <div class="bg-surface-container-low min-h-[calc(100vh-6rem)]">
+        <!--<div class="max-w-4xl mx-auto px-8 py-16 mt-12 md:mt-24">-->
+        <div class="max-w-4xl mx-auto px-8 pt-16 pb-12 pl-12 md:pl-24">
+            <div class="mb-16">
+                <h1 class="font-headline text-4xl md:text-5xl font-light text-on-surface mb-6 tracking-tight">
+                    {t('contactTitle')}
+                </h1>
+                <p class="font-body text-on-surface-variant max-w-xl text-lg leading-relaxed">
+                    {t('contactDescription')}
+                </p>
+            </div>
+
+            <ContactForm lang={lang as any}/>
+        </div>
+    </div>
+
+</BaseLayout>
