@@ -32,4 +32,20 @@ export default {
   availableIn: "Tersedia dalam",
   allPosts: "Semua Naskah",
   filterByTag: "Filter berdasarkan tag",
+
+  // Project-specific keys
+  projectsTitle: "Proyek.",
+  projectsDescription: "Arsip proyek perangkat lunak arsitektural yang aktif maupun selesai.",
+  viewProject: "Lihat Proyek",
+  visitSite: "Kunjungi Situs",
+  noProjects: "Tidak ada proyek yang tersedia dalam bahasa ini.",
+  filterByStack: "Filter berdasarkan teknologi",
+  sourceCode: "Kode Sumber",
+
+  // Gallery-specific keys
+  galleryTitle: "Galeri.",
+  galleryDescription: "Koleksi studi visual dan fragmen arsitektural.",
+  noPhotos: "Tidak ada foto yang tersedia.",
+  albumAll: "Semua",
+  closeViewer: "Tutup",
 };

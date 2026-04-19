@@ -1,211 +1,217 @@
 @import "tailwindcss";
 
 @theme {
-  --color-surface-container-highest: #dce3ea;
-  --color-on-error-container: #6e0a12;
-  --color-primary-dim: #205875;
-  --color-primary-container: #a7dbfd;
-  --color-tertiary-container: #c7cffe;
-  --color-on-tertiary-container: #3d456c;
-  --color-on-surface-variant: #586066;
-  --color-on-background: #2c3339;
-  --color-on-primary-fixed: #003b53;
-  --color-on-primary: #f4f9ff;
-  --color-primary: #2f6582;
-  --color-surface: #f7f9fd;
-  --color-surface-tint: #2f6582;
-  --color-surface-variant: #dce3ea;
-  --color-surface-container-high: #e3e9ef;
-  --color-tertiary: #545d85;
-  --color-on-tertiary-fixed-variant: #464f76;
-  --color-error-dim: #67040d;
-  --color-error: #a83836;
-  --color-inverse-on-surface: #9a9da0;
-  --color-surface-container-lowest: #ffffff;
-  --color-on-surface: #2c3339;
-  --color-secondary-dim: #435562;
-  --color-primary-fixed: #a7dbfd;
-  --color-on-error: #fff7f6;
-  --color-secondary-fixed-dim: #c4d7e6;
-  --color-tertiary-fixed-dim: #b9c1ef;
-  --color-on-secondary-container: #425460;
-  --color-on-primary-fixed-variant: #1f5874;
-  --color-secondary: #4f616e;
-  --color-on-primary-container: #114e6a;
-  --color-tertiary-dim: #485178;
-  --color-inverse-primary: #a7dbfd;
-  --color-on-secondary-fixed: #2f424d;
-  --color-surface-container: #e9eef4;
-  --color-surface-container-low: #f0f4f9;
-  --color-on-secondary: #f4f9ff;
-  --color-on-tertiary: #faf8ff;
-  --color-surface-bright: #f7f9fd;
-  --color-surface-dim: #d4dbe2;
-  --color-on-secondary-fixed-variant: #4b5e6a;
-  --color-secondary-fixed: #d2e5f4;
-  --color-outline: #747c82;
-  --color-error-container: #fa746f;
-  --color-tertiary-fixed: #c7cffe;
-  --color-on-tertiary-fixed: #293257;
-  --color-inverse-surface: #0b0f11;
-  --color-secondary-container: #d2e5f4;
-  --color-background: #f7f9fd;
-  --color-primary-fixed-dim: #99cdee;
-  --color-outline-variant: #abb3b9;
+    --color-surface-container-highest: #dce3ea;
+    --color-on-error-container: #6e0a12;
+    --color-primary-dim: #205875;
+    --color-primary-container: #a7dbfd;
+    --color-tertiary-container: #c7cffe;
+    --color-on-tertiary-container: #3d456c;
+    --color-on-surface-variant: #586066;
+    --color-on-background: #2c3339;
+    --color-on-primary-fixed: #003b53;
+    --color-on-primary: #f4f9ff;
+    --color-primary: #2f6582;
+    --color-surface: #f7f9fd;
+    --color-surface-tint: #2f6582;
+    --color-surface-variant: #dce3ea;
+    --color-surface-container-high: #e3e9ef;
+    --color-tertiary: #545d85;
+    --color-on-tertiary-fixed-variant: #464f76;
+    --color-error-dim: #67040d;
+    --color-error: #a83836;
+    --color-inverse-on-surface: #9a9da0;
+    --color-surface-container-lowest: #ffffff;
+    --color-on-surface: #2c3339;
+    --color-secondary-dim: #435562;
+    --color-primary-fixed: #a7dbfd;
+    --color-on-error: #fff7f6;
+    --color-secondary-fixed-dim: #c4d7e6;
+    --color-tertiary-fixed-dim: #b9c1ef;
+    --color-on-secondary-container: #425460;
+    --color-on-primary-fixed-variant: #1f5874;
+    --color-secondary: #4f616e;
+    --color-on-primary-container: #114e6a;
+    --color-tertiary-dim: #485178;
+    --color-inverse-primary: #a7dbfd;
+    --color-on-secondary-fixed: #2f424d;
+    --color-surface-container: #e9eef4;
+    --color-surface-container-low: #ffffff;
+    --color-on-secondary: #f4f9ff;
+    --color-on-tertiary: #faf8ff;
+    --color-surface-bright: #f7f9fd;
+    --color-surface-dim: #d4dbe2;
+    --color-on-secondary-fixed-variant: #4b5e6a;
+    --color-secondary-fixed: #d2e5f4;
+    --color-outline: #747c82;
+    --color-error-container: #fa746f;
+    --color-tertiary-fixed: #c7cffe;
+    --color-on-tertiary-fixed: #293257;
+    --color-inverse-surface: #0b0f11;
+    --color-secondary-container: #d2e5f4;
+    --color-background: #f7f9fd;
+    --color-primary-fixed-dim: #99cdee;
+    --color-outline-variant: #abb3b9;
 
-  --radius-DEFAULT: 0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
-  --radius-full: 0.75rem;
+    --radius-DEFAULT: 0.125rem;
+    --radius-lg: 0.25rem;
+    --radius-xl: 0.5rem;
+    --radius-full: 0.75rem;
 
-  --font-headline: "Space Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-label: "Space Grotesk", sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
+    --font-headline: "Space Grotesk", sans-serif;
+    --font-body: "Inter", sans-serif;
+    --font-label: "Space Grotesk", sans-serif;
+    --font-display: "Space Grotesk", sans-serif;
 }
 
 @layer base {
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-  }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
 }
 
 @layer utilities {
-  .mechanical-flicker-100ms:hover {
-    transition: all 100ms step-end;
-  }
-  ::-webkit-scrollbar {
-    width: 0px;
-  }
-  .typewriter-cursor::after {
-    content: '|';
-    animation: blink 1s infinite;
-  }
+    .mechanical-flicker-100ms:hover {
+        transition: all 100ms step-end;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    .typewriter-cursor::after {
+        content: '|';
+        animation: blink 1s infinite;
+    }
 }
 
-@keyframes blink { 
-  0%, 100% { opacity: 1; } 
-  50% { opacity: 0; } 
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 /* ─── Prose Styles for Blog Content ─── */
 .prose-veranda {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--color-on-surface);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda h2 {
-  font-family: var(--font-headline);
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-  color: var(--color-on-surface);
+    font-family: var(--font-headline);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda h3 {
-  font-family: var(--font-headline);
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  color: var(--color-on-surface);
+    font-family: var(--font-headline);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda p {
-  margin-bottom: 1.5rem;
-  color: var(--color-on-surface-variant);
+    margin-bottom: 1.5rem;
+    color: var(--color-on-surface-variant);
 }
 
 .prose-veranda a {
-  color: var(--color-primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 100ms step-end;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 100ms step-end;
 }
 
 .prose-veranda a:hover {
-  color: var(--color-primary-dim);
+    color: var(--color-primary-dim);
 }
 
 .prose-veranda ul,
 .prose-veranda ol {
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
 }
 
 .prose-veranda li {
-  margin-bottom: 0.5rem;
-  color: var(--color-on-surface-variant);
+    margin-bottom: 0.5rem;
+    color: var(--color-on-surface-variant);
 }
 
 .prose-veranda ul li::marker {
-  content: '+ ';
-  font-family: var(--font-headline);
-  color: var(--color-primary);
+    content: '+ ';
+    font-family: var(--font-headline);
+    color: var(--color-primary);
 }
 
 .prose-veranda ol li::marker {
-  font-family: var(--font-headline);
-  font-weight: 600;
-  color: var(--color-primary);
+    font-family: var(--font-headline);
+    font-weight: 600;
+    color: var(--color-primary);
 }
 
 .prose-veranda strong {
-  font-weight: 600;
-  color: var(--color-on-surface);
+    font-weight: 600;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda blockquote {
-  background: var(--color-surface-container);
-  border-left: 3px solid var(--color-primary);
-  padding: 1.5rem 2rem;
-  margin: 2rem 0;
-  font-style: italic;
-  color: var(--color-on-surface);
+    background: var(--color-surface-container);
+    border-left: 3px solid var(--color-primary);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda blockquote p {
-  margin-bottom: 0;
-  color: var(--color-on-surface);
+    margin-bottom: 0;
+    color: var(--color-on-surface);
 }
 
 .prose-veranda pre {
-  background: var(--color-surface-container);
-  padding: 1.5rem;
-  margin: 2rem 0;
-  overflow-x: auto;
-  font-size: 0.875rem;
-  line-height: 1.7;
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 0px;
+    background: var(--color-surface-container);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 0px;
 }
 
 .prose-veranda code {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 0.875em;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.875em;
 }
 
 .prose-veranda :not(pre) > code {
-  background: var(--color-surface-container);
-  padding: 0.15em 0.4em;
-  color: var(--color-primary);
+    background: var(--color-surface-container);
+    padding: 0.15em 0.4em;
+    color: var(--color-primary);
 }
 
 .prose-veranda img {
-  width: 100%;
-  height: auto;
-  margin: 2rem 0;
-  filter: grayscale(100%) contrast(1.25);
-  opacity: 0.95;
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    filter: grayscale(100%) contrast(1.25);
+    opacity: 0.95;
 }
 
 .prose-veranda hr {
-  border: none;
-  border-top: 1px solid var(--color-outline-variant);
-  opacity: 0.2;
-  margin: 3rem 0;
+    border: none;
+    border-top: 1px solid var(--color-outline-variant);
+    opacity: 0.2;
+    margin: 3rem 0;
 }

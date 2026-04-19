@@ -1,0 +1,234 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang as any);
+
+// Discover images from public/media/gallery
+const imageFiles = import.meta.glob<{ default: string }>('/public/media/gallery/**/*.{jpeg,jpg,png,gif,webp}', { eager: true });
+
+// Parse paths to group by album
+const albums = new Map<string, string[]>();
+
+Object.keys(imageFiles).forEach((path) => {
+  const parts = path.split('/');
+  const galleryIdx = parts.indexOf('gallery');
+  if (galleryIdx !== -1 && parts.length > galleryIdx + 2) {
+    const albumName = parts[galleryIdx + 1];
+    const publicUrl = path.replace('/public', '');
+    
+    if (!albums.has(albumName)) {
+      albums.set(albumName, []);
+    }
+    albums.get(albumName)!.push(publicUrl);
+  }
+});
+
+const albumNames = Array.from(albums.keys());
+---
+
+<div class="gallery-container">
+  {/* Album Filter Tabs */}
+  {albumNames.length > 0 && (
+    <div class="flex flex-wrap gap-2 items-center mb-12">
+      <button
+        data-album="all"
+        class="album-btn font-label text-[10px] uppercase tracking-[0.05em] px-4 py-2 bg-primary text-on-primary mechanical-flicker-100ms cursor-pointer"
+      >
+        {t('albumAll')}
+      </button>
+      {albumNames.map((album) => (
+        <button
+          data-album={album}
+          class="album-btn font-label text-[10px] uppercase tracking-[0.05em] px-4 py-2 bg-surface-container-lowest text-on-surface-variant border border-outline-variant/15 hover:bg-primary hover:text-on-primary mechanical-flicker-100ms cursor-pointer"
+        >
+          {album.replace(/-/g, ' ')}
+        </button>
+      ))}
+    </div>
+  )}
+
+  {/* Photo Grid */}
+  {albumNames.length === 0 ? (
+    <div class="py-24 text-center">
+      <p class="font-body text-on-surface-variant">{t('noPhotos')}</p>
+    </div>
+  ) : (
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+      {albumNames.flatMap((album) => 
+        albums.get(album)!.map((url, idx) => (
+          <div class="gallery-item-wrapper group cursor-pointer overflow-hidden bg-surface-container aspect-square relative" data-album={album} data-url={url}>
+            <img 
+              src={url} 
+              alt={`Gallery image in ${album}`} 
+              loading="lazy" 
+              class="w-full h-full object-cover grayscale contrast-125 opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 ease-out"
+            />
+            {/* Overlay hint */}
+            <div class="absolute inset-0 bg-surface-container-lowest/0 group-hover:bg-surface-container-lowest/10 transition-colors flex items-center justify-center">
+              <span class="material-symbols-outlined text-surface-container-lowest opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  )}
+
+  {/* Lightbox Overlay */}
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-inverse-surface/95 backdrop-blur-sm hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+    {/* Top Bar */}
+    <div class="absolute top-0 w-full p-6 flex justify-between items-center z-10">
+      <div class="font-label text-[10px] uppercase tracking-[0.2em] text-inverse-on-surface" id="lightbox-caption">
+        {/* Caption updated by JS */}
+      </div>
+      <button id="lightbox-close" class="text-inverse-on-surface hover:text-surface-container-lowest transition-colors flex items-center gap-2 group">
+        <span class="font-headline text-[11px] uppercase tracking-[0.1em] opacity-0 group-hover:opacity-100 transition-opacity">{t('closeViewer')}</span>
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    {/* Navigation */}
+    <button id="lightbox-prev" class="absolute left-6 top-1/2 -translate-y-1/2 text-inverse-on-surface hover:text-surface-container-lowest transition-colors p-2">
+      <span class="material-symbols-outlined text-4xl">chevron_left</span>
+    </button>
+    <button id="lightbox-next" class="absolute right-6 top-1/2 -translate-y-1/2 text-inverse-on-surface hover:text-surface-container-lowest transition-colors p-2">
+      <span class="material-symbols-outlined text-4xl">chevron_right</span>
+    </button>
+
+    {/* Image Container */}
+    <div class="w-full h-full p-16 md:p-24 flex items-center justify-center">
+      <img id="lightbox-img" src="" alt="Full screen preview" class="max-w-full max-h-full object-contain shadow-2xl" />
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Filter Logic
+    const filterBtns = document.querySelectorAll('.album-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item-wrapper');
+    
+    // Lightbox Elements
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+
+    let currentImages: string[] = [];
+    let currentIndex = 0;
+
+    // Filter interaction
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetAlbum = (btn as HTMLElement).dataset.album;
+
+        // Update button active state
+        filterBtns.forEach((b) => {
+          b.classList.remove('bg-primary', 'text-on-primary');
+          b.classList.add('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/15');
+        });
+        btn.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant/15');
+        btn.classList.add('bg-primary', 'text-on-primary');
+
+        // Filter images
+        galleryItems.forEach((item) => {
+          const itemAlbum = (item as HTMLElement).dataset.album;
+          if (targetAlbum === 'all' || itemAlbum === targetAlbum) {
+            (item as HTMLElement).style.display = '';
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Lightbox interaction
+    const updateLightboxImage = () => {
+      if (currentImages.length === 0) return;
+      const url = currentImages[currentIndex];
+      lightboxImg.src = url;
+      
+      // Update caption based on the current image element's data
+      const matchingItem = Array.from(galleryItems).find(item => (item as HTMLElement).dataset.url === url);
+      if (matchingItem && lightboxCaption) {
+        const album = (matchingItem as HTMLElement).dataset.album;
+        lightboxCaption.textContent = `[ ALBUM: ${album?.toUpperCase()} ] — ${currentIndex + 1} / ${currentImages.length}`;
+      }
+    };
+
+    const openLightbox = (url: string) => {
+      // Build current list of visible images
+      currentImages = Array.from(galleryItems)
+        .filter(item => (item as HTMLElement).style.display !== 'none')
+        .map(item => (item as HTMLElement).dataset.url as string);
+      
+      currentIndex = currentImages.indexOf(url);
+      if (currentIndex === -1) currentIndex = 0;
+
+      updateLightboxImage();
+      
+      if (lightbox) {
+        lightbox.classList.remove('hidden');
+        // trigger reflow
+        void lightbox.offsetWidth;
+        lightbox.classList.remove('opacity-0');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    const closeLightbox = () => {
+      if (lightbox) {
+        lightbox.classList.add('opacity-0');
+        setTimeout(() => {
+          lightbox.classList.add('hidden');
+          document.body.style.overflow = '';
+        }, 300);
+      }
+    };
+
+    const prevImage = () => {
+      if (currentImages.length <= 1) return;
+      currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+      updateLightboxImage();
+    };
+
+    const nextImage = () => {
+      if (currentImages.length <= 1) return;
+      currentIndex = (currentIndex + 1) % currentImages.length;
+      updateLightboxImage();
+    };
+
+    // Attach click events to grid items
+    galleryItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const url = (item as HTMLElement).dataset.url;
+        if (url) openLightbox(url);
+      });
+    });
+
+    // Lightbox controls
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', prevImage);
+    lightboxNext?.addEventListener('click', nextImage);
+    
+    // Close on backdrop click
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox || lightbox.classList.contains('hidden')) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
+    });
+  });
+</script>

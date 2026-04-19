@@ -32,4 +32,20 @@ export default {
   availableIn: "利用可能な言語",
   allPosts: "すべての原稿",
   filterByTag: "タグで絞り込む",
+
+  // Project-specific keys
+  projectsTitle: "プロジェクト。",
+  projectsDescription: "進行中および完了した建築的ソフトウェアプロジェクトのアーカイブ。",
+  viewProject: "プロジェクトを見る",
+  visitSite: "サイトを訪問",
+  noProjects: "この言語で利用できるプロジェクトはありません。",
+  filterByStack: "スタックで絞り込む",
+  sourceCode: "ソースコード",
+
+  // Gallery-specific keys
+  galleryTitle: "ギャラリー。",
+  galleryDescription: "視覚的考察と建築的断片のコレクション。",
+  noPhotos: "写真がありません。",
+  albumAll: "すべて",
+  closeViewer: "閉じる",
 };
