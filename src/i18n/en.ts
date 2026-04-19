@@ -48,4 +48,18 @@ export default {
   noPhotos: "No photos available.",
   albumAll: "All",
   closeViewer: "Close",
+
+  // Contact-specific keys
+  contactTitle: "Contact.",
+  contactDescription: "Initiate a transmission.",
+  contactName: "Name",
+  contactEmail: "Email",
+  contactSubject: "Subject",
+  contactMessage: "Message",
+  contactSubmit: "Send Message",
+  contactSending: "Sending...",
+  contactSuccess: "Transmission received. We will respond shortly.",
+  contactError: "Transmission failed. Please verify your connection and try again.",
+  contactRequired: "This field is required.",
+  contactInvalidEmail: "Please enter a valid email address.",
 };

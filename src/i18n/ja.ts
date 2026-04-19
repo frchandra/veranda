@@ -48,4 +48,18 @@ export default {
   noPhotos: "写真がありません。",
   albumAll: "すべて",
   closeViewer: "閉じる",
+
+  // Contact-specific keys
+  contactTitle: "お問い合わせ。",
+  contactDescription: "通信を開始する。",
+  contactName: "お名前",
+  contactEmail: "メールアドレス",
+  contactSubject: "件名",
+  contactMessage: "メッセージ",
+  contactSubmit: "送信する",
+  contactSending: "送信中...",
+  contactSuccess: "通信を受信しました。追ってご連絡いたします。",
+  contactError: "通信に失敗しました。接続を確認してもう一度お試しください。",
+  contactRequired: "この項目は必須です。",
+  contactInvalidEmail: "有効なメールアドレスを入力してください。",
 };

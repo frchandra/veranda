@@ -48,4 +48,18 @@ export default {
   noPhotos: "Tidak ada foto yang tersedia.",
   albumAll: "Semua",
   closeViewer: "Tutup",
+
+  // Contact-specific keys
+  contactTitle: "Kontak.",
+  contactDescription: "Mulai transmisi.",
+  contactName: "Nama",
+  contactEmail: "Email",
+  contactSubject: "Subjek",
+  contactMessage: "Pesan",
+  contactSubmit: "Kirim Pesan",
+  contactSending: "Mengirim...",
+  contactSuccess: "Transmisi diterima. Kami akan segera merespons.",
+  contactError: "Transmisi gagal. Silakan periksa koneksi Anda dan coba lagi.",
+  contactRequired: "Bidang ini wajib diisi.",
+  contactInvalidEmail: "Masukkan alamat email yang valid.",
 };
