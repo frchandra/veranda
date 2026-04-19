@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import GalleryGrid from '../../../components/GalleryGrid.astro';
+import { useTranslations } from '../../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'id' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as any);
+---
+
+<BaseLayout title={`${t('galleryTitle')} — ${t('siteTitle')}`} description={t('galleryDescription')} lang={lang as any}>
+  <div class="bg-surface-container-low min-h-[calc(100vh-6rem)] pb-24">
+    {/* Page Header */}
+    <div class="max-w-6xl mx-auto px-8 pt-16 pb-12 pl-12 md:pl-24">
+      {/* Margin label */}
+      <div class="font-label text-[10px] uppercase tracking-[0.2em] text-outline-variant mb-6 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-primary"></span>
+        [ ARCHIVE_v2.0 ]
+      </div>
+
+      {/* Title */}
+      <h1 class="font-display text-5xl md:text-6xl font-light tracking-tight text-on-surface mb-4">
+        {t('galleryTitle')}
+      </h1>
+
+      {/* Description */}
+      <p class="font-body text-base text-on-surface-variant leading-relaxed max-w-lg">
+        {t('galleryDescription')}
+      </p>
+    </div>
+
+    {/* Gallery Content */}
+    <div class="max-w-6xl mx-auto px-8 pl-12 md:pl-24">
+      <GalleryGrid lang={lang as string} />
+    </div>
+  </div>
+</BaseLayout>

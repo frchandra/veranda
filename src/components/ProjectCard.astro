@@ -1,0 +1,79 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  description: string;
+  tags: string[];
+  thumbnail?: string;
+  externalUrl?: string;
+  slug: string;
+  lang: string;
+  visitSiteLabel: string;
+}
+
+const { title, date, description, tags, thumbnail, externalUrl, slug, lang, visitSiteLabel } = Astro.props;
+
+// Format date locale-aware
+const localeMap: Record<string, string> = { en: 'en-US', id: 'id-ID', ja: 'ja-JP' };
+const formattedDate = date.toLocaleDateString(localeMap[lang] || 'en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="group bg-surface-container-lowest border border-outline-variant/15 flex flex-col sm:flex-row gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors rounded-none">
+  {/* Thumbnail */}
+  {thumbnail && (
+    <div class="block sm:w-48 sm:min-h-48 w-full h-48 sm:h-auto flex-shrink-0 overflow-hidden">
+      <img
+        src={thumbnail}
+        alt={title}
+        loading="lazy"
+        class="w-full h-full object-cover grayscale contrast-125 opacity-90 group-hover:opacity-100 transition-opacity"
+      />
+    </div>
+  )}
+
+  {/* Content */}
+  <div class="flex-grow p-6 sm:pl-8 sm:pr-12 flex flex-col justify-between relative">
+    {/* Top row: tags + date */}
+    <div>
+      <div class="flex items-center gap-3 mb-3">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="font-label text-[10px] uppercase tracking-[0.1em] bg-primary/10 text-primary px-2 py-0.5">
+            {tag}
+          </span>
+        ))}
+        <span class="font-label text-[10px] uppercase tracking-[0.05em] text-outline-variant">
+          {formattedDate}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h2 class="font-headline text-xl font-semibold text-on-surface leading-snug mb-2 group-hover:text-primary transition-colors">
+        {title}
+      </h2>
+
+      {/* Description */}
+      <p class="font-body text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-4">
+        {description}
+      </p>
+    </div>
+
+    {/* Bottom row: link */}
+    {externalUrl && (
+      <div>
+        <a
+          href={externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 font-headline text-[11px] uppercase tracking-[0.1em] text-primary hover:text-primary-dim transition-colors group/link"
+        >
+          {visitSiteLabel}
+          <span class="material-symbols-outlined text-sm group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform">arrow_outward</span>
+        </a>
+      </div>
+    )}
+  </div>
+</article>

@@ -32,4 +32,20 @@ export default {
   availableIn: "Available in",
   allPosts: "All Manuscripts",
   filterByTag: "Filter by tag",
+
+  // Project-specific keys
+  projectsTitle: "Projects.",
+  projectsDescription: "An archive of active and completed architectural software projects.",
+  viewProject: "View Project",
+  visitSite: "Visit Site",
+  noProjects: "No projects available in this language.",
+  filterByStack: "Filter by stack",
+  sourceCode: "Source Code",
+
+  // Gallery-specific keys
+  galleryTitle: "Gallery.",
+  galleryDescription: "A collection of visual studies and architectural fragments.",
+  noPhotos: "No photos available.",
+  albumAll: "All",
+  closeViewer: "Close",
 };

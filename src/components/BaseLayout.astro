@@ -31,8 +31,8 @@ const isActive = (path: string) => currentPath.startsWith(`/${lang}${path}`);
         <div class="hidden md:flex gap-8">
             <a href={`/${lang}/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/') && !isActive('/blog') && !isActive('/portfolio') && !isActive('/gallery') && !isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navHome')}</a>
             <a href={`/${lang}/blog/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/blog') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navJournal')}</a>
-            <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navPortfolio')}</a>
-            <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navGallery')}</a>
+            <a href={`/${lang}/projects/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/projects') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navPortfolio')}</a>
+            <a href={`/${lang}/gallery/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/gallery') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navGallery')}</a>
             <a href="#" class="text-outline-variant hover:text-on-surface transition-colors font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms">{t('navContact')}</a>
         </div>
         <LanguageSwitcher currentLang={lang} />
