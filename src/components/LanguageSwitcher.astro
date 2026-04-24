@@ -5,9 +5,9 @@ interface Props {
 const { currentLang } = Astro.props;
 
 const locales = [
-  { code: 'en', label: 'English' },
-  { code: 'id', label: 'Indonesian' },
-  { code: 'ja', label: 'Japanese' }
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'id', label: 'Indonesian', flag: '🇮🇩' },
+  { code: 'ja', label: 'Japanese', flag: '🇯🇵' }
 ];
 
 // Build a locale-swapped URL for the current page.
@@ -19,16 +19,14 @@ function switchLang(targetLang: string): string {
   return currentPath.replace(/^\/[a-z]{2}(\/|$)/, `/${targetLang}$1`);
 }
 ---
-<nav class="font-headline uppercase tracking-widest text-sm flex gap-2 text-outline items-center bg-transparent">
-  {locales.map((locale, index) => (
-    <>
-      <a 
-        href={switchLang(locale.code)}
-        class={`hover:text-primary transition-colors mechanical-flicker-100ms ${locale.code === currentLang ? 'text-primary font-bold border-b border-primary' : ''}`}
-      >
-        {locale.code.toUpperCase()}
-      </a>
-      {index < locales.length - 1 && <span>/</span>}
-    </>
+<nav class="flex gap-4 items-center bg-transparent">
+  {locales.map((locale) => (
+    <a 
+      href={switchLang(locale.code)}
+      title={locale.label}
+      class={`text-xl hover:scale-110 transition-transform mechanical-flicker-100ms ${locale.code === currentLang ? 'grayscale-0' : 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'}`}
+    >
+      {locale.flag}
+    </a>
   ))}
 </nav>
