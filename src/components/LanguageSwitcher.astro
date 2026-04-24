@@ -1,32 +1,34 @@
 ---
 interface Props {
-  currentLang: 'en' | 'id' | 'ja';
+    currentLang: 'en' | 'id' | 'ja';
 }
-const { currentLang } = Astro.props;
+const {currentLang} = Astro.props;
 
 const locales = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'id', label: 'Indonesian', flag: '🇮🇩' },
-  { code: 'ja', label: 'Japanese', flag: '🇯🇵' }
+    {code: 'id', label: 'Indonesian', country: 'id'},
+    {code: 'en', label: 'English', country: 'gb'},
+    {code: 'ja', label: 'Japanese', country: 'jp'}
 ];
 
 // Build a locale-swapped URL for the current page.
-// e.g. /en/blog/hello-world/ → /ja/blog/hello-world/
 const currentPath = Astro.url.pathname;
 function switchLang(targetLang: string): string {
-  // The path always starts with /{lang}/...
-  // Replace the first path segment (the lang code) with the target lang.
-  return currentPath.replace(/^\/[a-z]{2}(\/|$)/, `/${targetLang}$1`);
+    return currentPath.replace(/^\/[a-z]{2}(\/|$)/, `/${targetLang}$1`);
 }
 ---
 <nav class="flex gap-4 items-center bg-transparent">
-  {locales.map((locale) => (
-    <a 
-      href={switchLang(locale.code)}
-      title={locale.label}
-      class={`text-xl hover:scale-110 transition-transform mechanical-flicker-100ms ${locale.code === currentLang ? 'grayscale-0' : 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'}`}
-    >
-      {locale.flag}
-    </a>
-  ))}
+    {locales.map((locale) => (
+            <a
+                    href={switchLang(locale.code)}
+                    title={locale.label}
+                    class={`w-6 h-4 overflow-hidden transition-all duration-300 hover:scale-110 mechanical-flicker-100ms ${locale.code === currentLang ? 'grayscale-0 scale-110 ring-1 ring-primary/30' : 'grayscale opacity-50 hover:grayscale-0 hover:opacity-100'}`}
+            >
+                <img
+                        src={`https://flagcdn.com/${locale.country}.svg`}
+                        alt={locale.label}
+                        class="w-full h-full object-cover border-2"
+                        loading="lazy"
+                />
+            </a>
+    ))}
 </nav>
