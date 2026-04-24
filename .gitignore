@@ -26,3 +26,4 @@ pnpm-debug.log*
 # IDE folder
 .idea/
 .vscode/
+rsync.sh
