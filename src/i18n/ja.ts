@@ -1,5 +1,5 @@
 export default {
-    siteTitle: "Veranda",
+    siteTitle: "Herdiputra",
     hello: "こんにちは、世界！",
     navHome: "ホーム",
     navJournal: "ジャーナル",
@@ -10,7 +10,7 @@ export default {
     heroTitleHighlight: "安息の地。",
     heroSubtitle: "Verandaは、スピードによるノイズよりも思考の重みを大切にする人々のために設計されたデジタル・マニュスクリプトです。知的な探求のための静かな空間を提供します。",
     exploreArchive: "アーカイブを見る",
-    footerTranslationApproval: "すべての翻訳は著者に承認されています。",
+    footerTranslationApproval: "すべての翻訳は著者が承認しました。",
     heroManifesto: "ミッション・マニフェスト.txt",
     heroVersion: "v.4.02_起動中",
     heroCoordinates: "座標: 35.6895° N, 139.6917° E",

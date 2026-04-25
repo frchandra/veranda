@@ -1,5 +1,5 @@
 export default {
-    siteTitle: "Veranda",
+    siteTitle: "Herdiputra",
     hello: "Halo, Dunia!",
     navHome: "Beranda",
     navJournal: "Jurnal",
@@ -10,7 +10,7 @@ export default {
     heroTitleHighlight: "pikiran yang tenang.",
     heroSubtitle: "Veranda adalah naskah digital yang dirancang untuk mereka yang menghargai kedalaman pikiran dibandingkan kebisingan. Kami merancang ruang tenang untuk pekerjaan intelektual.",
     exploreArchive: "Jelajahi Arsip",
-    footerTranslationApproval: "Seluruh terjemahan telah disetujui oleh penulis.",
+    footerTranslationApproval: "Seluruh terjemahan diterjemahkan penulis.",
     heroManifesto: "Manifesto_Misi.txt",
     heroVersion: "v.4.02_aktif",
     heroCoordinates: "Koordinat: 35.6895° N, 139.6917° E",
@@ -31,7 +31,7 @@ export default {
     filterByTag: "Filter berdasarkan tag",
 
     // Project-specific keys
-    projectsTitle: "Proyek.",
+    projectsTitle: "Portofolio.",
     projectsDescription: "Arsip proyek perangkat lunak arsitektural yang aktif maupun selesai.",
     viewProject: "Lihat Proyek",
     visitSite: "Kunjungi Situs",

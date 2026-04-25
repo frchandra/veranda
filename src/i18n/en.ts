@@ -1,5 +1,5 @@
 export default {
-    siteTitle: "Veranda",
+    siteTitle: "Herdiputra",
     hello: "Hello, World!",
     navHome: "Home",
     navJournal: "Journal",
@@ -10,7 +10,7 @@ export default {
     heroTitleHighlight: "deliberate mind.",
     heroSubtitle: "Veranda is a digital manuscript designed for those who value the weight of thought over the noise of speed. We craft quiet spaces for intellectual labor.",
     exploreArchive: "Explore Archive",
-    footerTranslationApproval: "Every translation has been approved by the author.",
+    footerTranslationApproval: "Translation provided by the author.",
     heroManifesto: "Mission_Manifesto.txt",
     heroVersion: "v.4.02_active",
     heroCoordinates: "Coordinates: 35.6895° N, 139.6917° E",
@@ -31,7 +31,7 @@ export default {
     filterByTag: "Filter by tag",
 
     // Project-specific keys
-    projectsTitle: "Projects.",
+    projectsTitle: "Portfolio.",
     projectsDescription: "An archive of active and completed architectural software projects.",
     viewProject: "View Project",
     visitSite: "Visit Site",
