@@ -1,56 +1,65 @@
 ---
 import SEOHead from './SEOHead.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import { useTranslations } from '../i18n/utils';
+import {useTranslations} from '../i18n/utils';
 import '../styles/global.css';
 
 interface Props {
-  title: string;
-  description: string;
-  lang: 'en' | 'id' | 'ja';
-  fullScreen?: boolean;
-  ogImage?: string;
-  extraHead?: string;
+    title: string;
+    description: string;
+    lang: 'en' | 'id' | 'ja';
+    fullScreen?: boolean;
+    ogImage?: string;
+    extraHead?: string;
 }
-const { title, description, lang, fullScreen = false, ogImage, extraHead } = Astro.props;
+const {title, description, lang, fullScreen = false, ogImage, extraHead} = Astro.props;
 const t = useTranslations(lang);
 const currentPath = Astro.url.pathname;
 const isActive = (path: string) => currentPath.startsWith(`/${lang}${path}`);
 ---
 <html lang={lang}>
-  <head>
-    <SEOHead title={title} description={description} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <Fragment set:html={extraHead} />
-  </head>
-  <body class:list={["bg-surface text-on-surface font-body flex flex-col", fullScreen ? "overflow-hidden h-screen" : "min-h-screen"]}>
-    <nav class="bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 fixed top-0 z-50 w-full flex justify-between items-center px-8 py-6 max-w-none">
-        <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">
-            <a href={`/${lang}/`}>{t('siteTitle')}</a>
-        </div>
-        <div class="hidden md:flex gap-8">
-            <a href={`/${lang}/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/') && !isActive('/blog') && !isActive('/portfolio') && !isActive('/gallery') && !isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navHome')}</a>
-            <a href={`/${lang}/blog/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/blog') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navJournal')}</a>
-            <a href={`/${lang}/projects/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/projects') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navPortfolio')}</a>
-            <a href={`/${lang}/gallery/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/gallery') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navGallery')}</a>
-            <a href={`/${lang}/contact/`} class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navContact')}</a>
-        </div>
-        <LanguageSwitcher currentLang={lang} />
-    </nav>
-    
-    <main class:list={["relative flex-grow w-full mt-24", fullScreen ? "overflow-hidden" : ""]}>
-      <slot />
-    </main>
+<head>
+    <SEOHead title={title} description={description}/>
+    {ogImage &&
+            <meta property="og:image" content={ogImage}/>}
+    <Fragment set:html={extraHead}/>
+</head>
+<body class:list={["bg-surface text-on-surface font-body flex flex-col", fullScreen ? "overflow-hidden h-screen" : "min-h-screen"]}>
+<nav class="bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 fixed top-0 z-50 w-full flex justify-between items-center px-8 py-6 max-w-none">
+    <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">
+        <a href={`/${lang}/`}>{t('siteTitle')}</a>
+    </div>
+    <div class="hidden md:flex gap-8">
+        <a href={`/${lang}/`}
+           class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/') && !isActive('/blog') && !isActive('/portfolio') && !isActive('/gallery') && !isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navHome')}</a>
+        <a href={`/${lang}/blog/`}
+           class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/blog') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navJournal')}</a>
+        <a href={`/${lang}/projects/`}
+           class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/projects') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navPortfolio')}</a>
+        <a href={`/${lang}/gallery/`}
+           class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/gallery') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navGallery')}</a>
+        <a href={`/${lang}/contact/`}
+           class:list={["font-headline uppercase tracking-widest text-sm mechanical-flicker-100ms", isActive('/contact') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-outline-variant hover:text-on-surface transition-colors']}>{t('navContact')}</a>
+    </div>
+    <LanguageSwitcher currentLang={lang}/>
+</nav>
 
-    <footer class="bg-surface-container w-full px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
-        <div class="font-headline text-[10px] uppercase tracking-[0.1em] text-outline">
-            &copy; {new Date().getFullYear()} {t('siteTitle')}. {t('footerBuiltFor')}
-        </div>
-        <div class="flex gap-8 font-headline text-[10px] uppercase tracking-[0.1em]">
-            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerPrivacy')}</a>
-            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerArchive')}</a>
-            <a href="#" class="text-outline hover:text-primary transition-colors">{t('footerRSS')}</a>
-        </div>
-    </footer>
-  </body>
+<main class:list={["relative flex-grow w-full mt-24", fullScreen ? "overflow-hidden" : ""]}>
+    <slot/>
+</main>
+
+<footer class="bg-surface-container w-full px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
+    <div class="font-headline text-[10px] uppercase tracking-[0.1em] text-outline">
+        &copy; {new Date().getFullYear()} {t('siteTitle')}. {t('footerTranslationApproval')}
+    </div>
+    <div class="flex gap-8 font-headline text-[10px] uppercase tracking-[0.1em]">
+        <a href="https://www.linkedin.com/in/nismara-chandra-herdiputra" target="_blank" rel="noopener noreferrer"
+           class="text-outline hover:text-primary transition-colors">LinkedIn</a>
+        <a href="https://github.com/frchandra" target="_blank" rel="noopener noreferrer"
+           class="text-outline hover:text-primary transition-colors">Github</a>
+        <a href="mailto:nismara.chandra@herdiputra.com"
+           class="text-outline hover:text-primary transition-colors">nismara.chandra@herdiputra.com</a>
+    </div>
+</footer>
+</body>
 </html>
