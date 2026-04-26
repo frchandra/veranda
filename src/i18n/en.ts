@@ -52,4 +52,8 @@ export default {
     contactError: "Transmission failed. Please verify your connection and try again.",
     contactRequired: "This field is required.",
     contactInvalidEmail: "Please enter a valid email address.",
+    // Hero-specific keys
+    heroTitle: "Hello, welcome to my website",
+    heroMessage: "Glad that you are found me, I put some of my thoughts and projects here, you are most welcome to take a look around. You can also further contact me from here ",
+    heroButton: "Read My Blog",
 };

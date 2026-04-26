@@ -1,0 +1,78 @@
+---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+    lang: 'en' | 'id' | 'ja';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div id="hero-notification" class="fixed top-28 right-0 z-40 transition-transform duration-700 ease-in-out transform translate-x-1/2 is-hidden flex">
+    <!-- Main Content -->
+        <div id="hero-panel" class="w-80 md:w-96 bg-surface/80 supports-backdrop-filter:bg-surface/40 backdrop-blur-sm hover:backdrop-blur-sm hover:bg-transparent supports-backdrop-filter:hover:bg-transparent border border-r-0 border-outline-variant/30 rounded-l-xl p-6 shadow-2xl transition-all duration-500">
+        <h2 class="text-xl font-headline font-bold mb-3 tracking-wide text-on-surface">{t('heroTitle')}</h2>
+        <p class="text-sm text-on-surface mb-6 leading-relaxed font-body">
+            {t('heroMessage')}
+        </p>
+        <div class="flex gap-4">
+            <a href={`/${lang}/blog/`} class="px-4 py-2 bg-primary/10 hover:bg-surface/80 border border-primary/30 rounded text-sm text-primary transition-colors font-headline tracking-wider">
+                {t('heroButton')}
+            </a>
+            <a href={`/${lang}/contact/`} class="px-4 py-2 bg-transparent hover:bg-surface/80 border border-outline-variant/30 hover:border-outline-variant/60 rounded text-sm text-outline hover:text-on-surface transition-colors font-headline tracking-wider">
+                {t('navContact')}
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const hero = document.getElementById('hero-notification');
+    if (hero) {
+        let hideTimeout: ReturnType<typeof setTimeout>;
+
+        const showHero = () => {
+            hero.classList.remove('translate-x-1/2');
+            hero.classList.remove('is-hidden');
+        };
+
+        const hideHero = () => {
+            hero.classList.add('translate-x-1/2');
+            hero.classList.add('is-hidden');
+        };
+
+        const resetTimeout = () => {
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(hideHero, 5000);
+        };
+
+        // Initial pop-in
+        setTimeout(() => {
+            showHero();
+            resetTimeout();
+        }, 500);
+
+        // Hover interactions
+        hero.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            showHero();
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            resetTimeout();
+        });
+    }
+</script>
+
+<style>
+    #hero-panel {
+        backdrop-filter: blur(4px);
+    }
+
+    #hero-notification.is-hidden #hero-panel {
+        backdrop-filter: none;
+        background-color: transparent;
+    }
+</style>
+

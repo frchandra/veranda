@@ -52,4 +52,8 @@ export default {
     contactError: "通信に失敗しました。接続を確認してもう一度お試しください。",
     contactRequired: "この項目は必須です。",
     contactInvalidEmail: "有効なメールアドレスを入力してください。",
+    // Hero-specific keys
+    heroTitle: "こんにちは、私のウェブサイトへようこそ",
+    heroMessage: "私を見つけてくれて嬉しいです。ここに私の考えやプロジェクトのいくつかを置いていますので、どうぞご覧になってください。ここからさらに私に連絡することもできます",
+    heroButton: "私のブログを読む",
 };

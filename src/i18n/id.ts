@@ -52,4 +52,8 @@ export default {
     contactError: "Transmisi gagal. Silakan periksa koneksi Anda dan coba lagi.",
     contactRequired: "Bidang ini wajib diisi.",
     contactInvalidEmail: "Masukkan alamat email yang valid.",
+    // Hero-specific keys
+    heroTitle: "Halo, selamat datang di website saya",
+    heroMessage: "Senang Anda menemukan saya, saya menaruh beberapa pemikiran dan proyek saya di sini, Anda sangat dipersilakan untuk melihat-lihat. Anda juga dapat menghubungi saya lebih lanjut dari sini",
+    heroButton: "Baca Blog Saya",
 };

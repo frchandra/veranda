@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
 import {useTranslations} from '../../i18n/utils';
+import { Image } from 'astro:assets';
 import mainBackground from '../../../public/media/main-background.jpg';
 
 export function getStaticPaths() {
@@ -16,13 +18,17 @@ const t = useTranslations(lang as any);
 ---
 <BaseLayout title={t('siteTitle')} description="Lobby page" lang={lang as any} fullScreen={true}>
     <!-- Full Screen Background Image -->
-    <div class="fixed inset-0 w-screen h-screen -z-10">
-        <div
-                class="w-full h-full bg-center bg-cover contrast-125 opacity-90"
-                style={`background-image: url('${mainBackground.src}')`}
-                aria-hidden="true"
-        ></div>
+        <div class="fixed inset-0 w-screen h-screen -z-10 group">
+        <Image
+            src={mainBackground}
+            alt="Veranda Background"
+            class="w-full h-full object-cover object-center contrast-125 opacity-90 transform-gpu"
+            format="webp"
+            quality="high"
+            aria-hidden="true"
+        />
         <!-- Tonal Overlay -->
-        <div class="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-primary/5 mix-blend-multiply pointer-events-none group-hover:bg-transparent"></div>
     </div>
+    <Hero lang={lang as any} />
 </BaseLayout>
