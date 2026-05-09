@@ -3,7 +3,7 @@ title: "Kesetiaan Analog di Era Digital"
 date: 2026-04-10
 description: "Mengapa resistensi taktil pena dan kertas tetap menjadi antarmuka terbaik untuk kerja intelektual."
 tags: ["teknologi", "kerajinan"]
-coverImage: "/media/blog/building-with-astro/cover.png"
+coverImage: "/media/blog/building-with-astro/cover-fuji-san.png"
 ---
 
 Web modern itu berisik. Setiap permukaan berteriak meminta perhatian, setiap interaksi menuntut respons. Dalam urgensi buatan ini, kita telah kehilangan sesuatu yang esensial: otoritas tenang dari alat yang dibuat dengan baik.

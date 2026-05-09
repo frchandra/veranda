@@ -3,7 +3,7 @@ title: "Arsitektur Ketenangan"
 date: 2026-03-25
 description: "Menjelajahi pertemuan geometri brutalis dan kelembutan cahaya alami di ruang kerja suburban."
 tags: ["arsitektur", "minimalisme"]
-coverImage: "/media/blog/hello-world/cover.png"
+coverImage: "/media/blog/hello-world/cover-fuji-san.png"
 ---
 
 Ada bobot khusus dari keheningan yang hanya ada di pagi hari. Sebelum dunia digital memulai siaran hariannya, lingkungan fisik berbicara melalui bayangannya. Dalam studi ini, kami mengkaji bagaimana estetika Veranda berusaha menangkap ketenangan yang cepat berlalu ini.
