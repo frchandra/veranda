@@ -3,7 +3,7 @@ title: "静寂の建築"
 date: 2026-03-25
 description: "郊外のワークスペースにおけるブルータリスト幾何学と自然光の柔らかさの交差点を探る。"
 tags: ["建築", "ミニマリズム"]
-coverImage: "/media/blog/hello-world/cover.png"
+coverImage: "/media/blog/hello-world/cover-fuji-san.png"
 ---
 
 早朝にだけ存在する、静寂の特有の重みがある。デジタル世界がその日の放送を始める前に、物理的環境はその影を通して語りかける。この研究では、Verandaの美学がこの儚い静寂をいかに捉えようとしているかを検証する。
