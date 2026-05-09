@@ -29,12 +29,6 @@ const allTags = [...new Set(langProjects.flatMap((project) => project.data.tags)
   <div class="bg-surface-container-low min-h-[calc(100vh-6rem)]">
     {/* Page Header */}
     <div class="max-w-4xl mx-auto px-8 pt-16 pb-12 pl-12 md:pl-24">
-      {/* Margin label */}
-      <div class="font-label text-[10px] uppercase tracking-[0.2em] text-outline-variant mb-6 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 bg-primary"></span>
-        [ PORTFOLIO_v1.0 ]
-      </div>
-
       {/* Title */}
       <h1 class="font-display text-5xl md:text-6xl font-light tracking-tight text-on-surface mb-4">
         {t('projectsTitle')}
@@ -90,7 +84,7 @@ const allTags = [...new Set(langProjects.flatMap((project) => project.data.tags)
                   externalUrl={project.data.externalUrl}
                   slug={slug}
                   lang={lang!}
-                  visitSiteLabel={t('visitSite')}
+                  visitSiteLabel={t('viewProject')}
                 />
               </div>
             );
