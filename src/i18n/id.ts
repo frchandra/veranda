@@ -3,7 +3,7 @@ export default {
     hello: "Halo, Dunia!",
     navHome: "Beranda",
     navBlog: "Blog",
-    navPortfolio: "Portofolio",
+    navPortfolio: "Karya",
     navGallery: "Galeri",
     navContact: "Kontak",
     footerTranslationApproval: "Seluruh terjemahan diterjemahkan penulis.",

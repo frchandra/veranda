@@ -3,7 +3,7 @@ export default {
     hello: "こんにちは、世界！",
     navHome: "ホーム",
     navBlog: "ブログ",
-    navPortfolio: "ポートフォリオ",
+    navPortfolio: "やったこと",
     navGallery: "ギャラリー",
     navContact: "お問い合わせ",
     footerTranslationApproval: "すべての翻訳は著者承認済みです。",
@@ -21,9 +21,8 @@ export default {
     availableIn: "利用可能な言語",
     allPosts: "すべてのポスト",
     filterByTag: "タグで絞り込む",
-
     // Project-specific keys
-    projectsTitle: "　やったこと。",
+    projectsTitle: "やったこと。",
     projectsDescription: "プロジェクト、研究、趣味、会社など",
     viewProject: "詳細を見る",
     visitSite: "サイトを訪問",
