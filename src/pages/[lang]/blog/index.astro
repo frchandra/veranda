@@ -49,7 +49,7 @@ const allTags = [...new Set(langPosts.flatMap((post) => post.data.tags))];
                                 data-tag="all"
                                 class="tag-btn font-label text-[10px] uppercase tracking-[0.05em] px-3 py-1 bg-primary text-on-primary mechanical-flicker-100ms cursor-pointer"
                         >
-                            All
+                            {t('AllTags')}
                         </button>
                         {allTags.map((tag) => (
                                 <button

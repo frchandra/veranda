@@ -1,5 +1,5 @@
 export default {
-    siteTitle: "Herdiputra",
+    siteTitle: "Nismara Chandra",
     hello: "Halo, Dunia!",
     navHome: "Beranda",
     navBlog: "Blog",
@@ -59,4 +59,5 @@ export default {
     heroMessage: "Selamat datang, anda dapat menemukan beberapa pemikiran dan proyek saya di sini. Silakan lihat beberapa.",
     thanksForReading: "Terima kasih telah membaca",
     imageFrom: "Gambar dari unslpash.com",
+    AllTags: "Semua Tag",
 };

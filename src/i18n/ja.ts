@@ -1,5 +1,5 @@
 export default {
-    siteTitle: "Herdiputra",
+    siteTitle: "ニスマラ・チャンドラ",
     hello: "こんにちは、世界！",
     navHome: "ホーム",
     navBlog: "ブログ",
@@ -58,4 +58,5 @@ export default {
     heroMessage: "来客様ようこそ、ここには私の考えやプロジェクトをいくつか載せていますので、ぜひご覧ください。",
     thanksForReading: "読んでいただきありがとうございます",
     imageFrom: "この画像はunslpash.comから提供されています",
+    AllTags: "すべてのタグ",
 };
