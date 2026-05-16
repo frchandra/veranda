@@ -82,12 +82,12 @@ const jsonLd = post ? JSON.stringify({
     "datePublished": post.data.date.toISOString(),
     "image": post.data.coverImage ? `${siteUrl}${post.data.coverImage}` : undefined,
     "author": {
-        "@type": "Organization",
-        "name": "Veranda"
+        "@type": "Person",
+        "name": "nismara.chandra@herdiputra.com"
     },
     "publisher": {
-        "@type": "Organization",
-        "name": "Veranda"
+        "@type": "Person",
+        "name": "nismara.chandra@herdiputra.com"
     }
 }) : '';
 

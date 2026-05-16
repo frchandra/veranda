@@ -214,3 +214,42 @@
     opacity: 0.2;
     margin: 3rem 0;
 }
+
+/* ─── Table Styles ─── */
+.prose-veranda table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    border: 1px solid var(--color-outline-variant);
+}
+
+.prose-veranda table thead {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.prose-veranda table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid var(--color-outline-variant);
+    font-family: var(--font-headline);
+}
+
+.prose-veranda table td {
+    padding: 1rem;
+    border: 1px solid var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+}
+
+.prose-veranda table tbody tr:nth-child(odd) {
+    background-color: var(--color-surface-container-low);
+}
+
+.prose-veranda table tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.prose-veranda table tbody tr:hover {
+    background-color: var(--color-surface-container);
+}
