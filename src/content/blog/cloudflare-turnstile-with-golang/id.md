@@ -3,7 +3,7 @@ title: "Implementasi Validasi Cloudflare Turnstile dengan Go"
 date: 2026-05-01
 description: "Panduan mendalam membangun microservice Go untuk validasi token Cloudflare Turnstile di sisi server."
 tags: [ "backend", "API" ]
-coverImage: "/media/blog/why-i-create-this-website/cover-fuji-san.jpg"
+coverImage: "/media/blog/cloudflare-turnstile-with-golang/cover.jpg"
 ---
 
 ## Ringkasan

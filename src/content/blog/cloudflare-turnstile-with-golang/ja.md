@@ -3,7 +3,7 @@ title: "GoによるCloudflare Turnstile検証の実装"
 date: 2026-05-01
 description: "Cloudflare Turnstileトークンのサーバーサイド検証を行うGoマイクロサービスの構築に関する詳細な解説。"
 tags: [ "バックエンド", "API" ]
-coverImage: "/media/blog/why-i-create-this-website/cover-fuji-san.jpg"
+coverImage: "/media/blog/cloudflare-turnstile-with-golang/cover.jpg"
 ---
 
 ## 概要
