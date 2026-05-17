@@ -22,15 +22,21 @@ const formattedDate = date.toLocaleDateString(localeMap[lang] || 'en-US', {
 });
 ---
 
-<article class="group bg-surface-container-lowest border border-outline-variant/15 flex flex-col sm:flex-row gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors rounded-none">
+<article class="group bg-surface-container-lowest border border-outline-variant/15 flex flex-col gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors rounded-none">
   {/* Thumbnail */}
   {thumbnail && (
-    <div class="block sm:w-48 sm:min-h-48 w-full h-48 sm:h-auto flex-shrink-0 overflow-hidden">
+    <div class="block w-full h-56 md:h-70 lg:h-100 overflow-hidden relative bg-center bg-cover">
+      {/* Blurred background layer */}
+      <div
+        class="absolute inset-0"
+        style={`background-image: url('${thumbnail}'); background-size: cover; background-position: center; filter: blur(15px);`}
+      />
+      {/* Sharp image layer */}
       <img
         src={thumbnail}
         alt={title}
         loading="lazy"
-        class="w-full h-full object-cover grayscale contrast-125 opacity-90 group-hover:opacity-100 transition-opacity"
+        class="relative w-full h-full object-contain group-hover:opacity-100 transition-opacity"
       />
     </div>
   )}

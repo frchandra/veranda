@@ -155,6 +155,7 @@
 }
 
 .prose-veranda ol li::marker {
+    content: counter(list-item) '. ';
     font-family: var(--font-headline);
     font-weight: 600;
     color: var(--color-primary);
