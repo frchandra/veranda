@@ -4,6 +4,7 @@ date: 2026-05-01
 description: "There is much going inside as well as outside"
 tags: [ "journal" ]
 coverImage: "/media/blog/why-i-create-this-website/cover-fuji-san.jpg"
+pinned: true
 ---
 
 > Hello world!

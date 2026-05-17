@@ -4,6 +4,7 @@ date: 2026-05-01
 description: "内にも外にも、いろいろなことがある"
 tags: [ "ジャーナル" ]
 coverImage: "/media/blog/why-i-create-this-website/cover-fuji-san.jpg"
+pinned: true
 ---
 
 > Hello world!

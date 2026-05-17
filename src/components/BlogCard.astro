@@ -9,9 +9,10 @@ interface Props {
   lang: string;
   readMoreLabel: string;
   readingTimeLabel: string;
+  pinned?: boolean;
 }
 
-const { title, date, description, tags, coverImage, slug, lang, readMoreLabel, readingTimeLabel } = Astro.props;
+const { title, date, description, tags, coverImage, slug, lang, readMoreLabel, readingTimeLabel, pinned = false } = Astro.props;
 
 // Estimate reading time (rough: ~200 words/min)
 const wordCount = description.split(/\s+/).length;
@@ -26,7 +27,12 @@ const formattedDate = date.toLocaleDateString(localeMap[lang] || 'en-US', {
 });
 ---
 
-<article class="group bg-surface-container-lowest border border-outline-variant/15 flex flex-col sm:flex-row gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors">
+<article class:list={[
+  'group flex flex-col sm:flex-row gap-0 mechanical-flicker-100ms hover:bg-surface-container-low transition-colors',
+  pinned
+    ? 'bg-primary/[0.04] border border-primary/20'
+    : 'bg-surface-container-lowest border border-outline-variant/15'
+]}>
   {/* Thumbnail */}
   {coverImage && (
     <a href={`/${lang}/blog/${slug}/`} class="block sm:w-36 sm:min-h-36 w-full h-48 sm:h-auto flex-shrink-0 overflow-hidden">
@@ -56,7 +62,10 @@ const formattedDate = date.toLocaleDateString(localeMap[lang] || 'en-US', {
 
       {/* Title */}
       <a href={`/${lang}/blog/${slug}/`} class="block">
-        <h2 class="font-headline text-lg font-semibold text-on-surface leading-snug mb-2 group-hover:text-primary transition-colors">
+        <h2 class="font-headline text-lg font-semibold text-on-surface leading-snug mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+          {pinned && (
+            <span class="material-symbols-outlined text-primary text-base -rotate-45 flex-shrink-0" aria-label="Pinned">push_pin</span>
+          )}
           {title}
         </h2>
       </a>

@@ -19,7 +19,11 @@ const t = useTranslations(lang as any);
 const allPosts = await getCollection('blog');
 const langPosts = allPosts
     .filter((post) => post.id.endsWith(`/${lang}.md`) || post.id.endsWith(`/${lang}`))
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+    .sort((a, b) => {
+        // Pinned posts come first, then sort by date descending
+        if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+        return b.data.date.getTime() - a.data.date.getTime();
+    });
 
 // Collect all unique tags
 const allTags = [...new Set(langPosts.flatMap((post) => post.data.tags))];
@@ -87,6 +91,7 @@ const allTags = [...new Set(langPosts.flatMap((post) => post.data.tags))];
                                                 lang={lang!}
                                                 readMoreLabel={t('readMore')}
                                                 readingTimeLabel={t('readingTime')}
+                                                pinned={post.data.pinned}
                                         />
                                     </div>
                             );

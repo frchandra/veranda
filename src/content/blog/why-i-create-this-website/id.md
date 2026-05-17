@@ -4,6 +4,7 @@ date: 2026-05-01
 description: "Banyak hal yang terjadi di dalam maupun di luar"
 tags: [ "jurnal" ]
 coverImage: "/media/blog/why-i-create-this-website/cover-fuji-san.jpg"
+pinned: true
 ---
 
 > Hello world!
